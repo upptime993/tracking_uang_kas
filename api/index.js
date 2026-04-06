@@ -6,31 +6,25 @@ require('dotenv').config();
 
 const app = express();
 
-// Middleware
 app.use(cors());
 app.use(express.json());
 app.use(express.static(path.join(__dirname, '../public')));
 
-// ==================== MONGODB CONNECTION ====================
+// ==================== DATABASE ====================
 let isConnected = false;
 
 async function connectDB() {
   if (isConnected) return;
   try {
-    await mongoose.connect(process.env.MONGODB_URI, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
+    await mongoose.connect(process.env.MONGODB_URI);
     isConnected = true;
-    console.log('MongoDB Connected');
+    console.log('✅ MongoDB Connected');
   } catch (error) {
-    console.error('MongoDB Error:', error);
+    console.error('❌ MongoDB Error:', error.message);
   }
 }
 
 // ==================== SCHEMAS ====================
-
-// Schema Transaksi
 const transaksiSchema = new mongoose.Schema({
   tanggal: { type: Date, required: true },
   jenis: { type: String, enum: ['pemasukan', 'pengeluaran'], required: true },
@@ -41,7 +35,6 @@ const transaksiSchema = new mongoose.Schema({
   createdAt: { type: Date, default: Date.now }
 });
 
-// Schema Anggota
 const anggotaSchema = new mongoose.Schema({
   nama: { type: String, required: true },
   status: { type: String, enum: ['Sudah Bayar', 'Belum Bayar'], default: 'Belum Bayar' },
@@ -49,7 +42,6 @@ const anggotaSchema = new mongoose.Schema({
   createdAt: { type: Date, default: Date.now }
 });
 
-// Schema Anggaran
 const anggaranSchema = new mongoose.Schema({
   nama: { type: String, required: true },
   kategori: { type: String, required: true },
@@ -59,7 +51,6 @@ const anggaranSchema = new mongoose.Schema({
   createdAt: { type: Date, default: Date.now }
 });
 
-// Schema Pengaturan
 const pengaturanSchema = new mongoose.Schema({
   namaKelas: { type: String, default: 'Kelas X RPL' },
   bendahara: { type: String, default: 'Bendahara' },
@@ -72,7 +63,7 @@ const Anggota = mongoose.models.Anggota || mongoose.model('Anggota', anggotaSche
 const Anggaran = mongoose.models.Anggaran || mongoose.model('Anggaran', anggaranSchema);
 const Pengaturan = mongoose.models.Pengaturan || mongoose.model('Pengaturan', pengaturanSchema);
 
-// ==================== MIDDLEWARE DB ====================
+// Connect DB sebelum setiap request
 app.use(async (req, res, next) => {
   await connectDB();
   next();
@@ -80,323 +71,256 @@ app.use(async (req, res, next) => {
 
 // ==================== API ROUTES ====================
 
-// --- DASHBOARD / SUMMARY ---
+// Test route
+app.get('/api/test', (req, res) => {
+  res.json({ success: true, message: 'API berjalan!', mongodb: isConnected });
+});
+
+// SUMMARY
 app.get('/api/summary', async (req, res) => {
   try {
     const transaksi = await Transaksi.find();
-    
-    const totalPemasukan = transaksi
-      .filter(t => t.jenis === 'pemasukan')
-      .reduce((sum, t) => sum + t.nominal, 0);
-    
-    const totalPengeluaran = transaksi
-      .filter(t => t.jenis === 'pengeluaran')
-      .reduce((sum, t) => sum + t.nominal, 0);
-    
+    const totalPemasukan = transaksi.filter(t => t.jenis === 'pemasukan').reduce((s, t) => s + t.nominal, 0);
+    const totalPengeluaran = transaksi.filter(t => t.jenis === 'pengeluaran').reduce((s, t) => s + t.nominal, 0);
     const saldo = totalPemasukan - totalPengeluaran;
 
-    // Pengeluaran hari ini
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
+    const today = new Date(); today.setHours(0, 0, 0, 0);
     const keluarHariIni = transaksi
       .filter(t => t.jenis === 'pengeluaran' && new Date(t.tanggal) >= today)
-      .reduce((sum, t) => sum + t.nominal, 0);
+      .reduce((s, t) => s + t.nominal, 0);
 
-    // Pengeluaran 7 hari
-    const week = new Date();
-    week.setDate(week.getDate() - 7);
+    const week = new Date(); week.setDate(week.getDate() - 7);
     const keluar7Hari = transaksi
       .filter(t => t.jenis === 'pengeluaran' && new Date(t.tanggal) >= week)
-      .reduce((sum, t) => sum + t.nominal, 0);
+      .reduce((s, t) => s + t.nominal, 0);
 
-    res.json({
-      success: true,
-      data: {
-        saldo,
-        totalPemasukan,
-        totalPengeluaran,
-        keluarHariIni,
-        keluar7Hari
-      }
-    });
-  } catch (error) {
-    res.status(500).json({ success: false, message: error.message });
+    res.json({ success: true, data: { saldo, totalPemasukan, totalPengeluaran, keluarHariIni, keluar7Hari } });
+  } catch (e) {
+    res.status(500).json({ success: false, message: e.message });
   }
 });
 
-// --- TRANSAKSI ROUTES ---
-// GET semua transaksi
+// TRANSAKSI - GET
 app.get('/api/transaksi', async (req, res) => {
   try {
-    const { jenis, bulan, tahun, limit } = req.query;
+    const { jenis, limit } = req.query;
     let filter = {};
-    
-    if (jenis) filter.jenis = jenis;
-    
-    if (bulan && tahun) {
-      const startDate = new Date(tahun, bulan - 1, 1);
-      const endDate = new Date(tahun, bulan, 0);
-      filter.tanggal = { $gte: startDate, $lte: endDate };
-    }
-    
+    if (jenis && jenis !== 'semua') filter.jenis = jenis;
+
     let query = Transaksi.find(filter).sort({ tanggal: -1, createdAt: -1 });
     if (limit) query = query.limit(parseInt(limit));
-    
-    const transaksi = await query;
-    res.json({ success: true, data: transaksi });
-  } catch (error) {
-    res.status(500).json({ success: false, message: error.message });
+
+    const data = await query;
+    res.json({ success: true, data });
+  } catch (e) {
+    res.status(500).json({ success: false, message: e.message });
   }
 });
 
-// POST tambah transaksi
+// TRANSAKSI - POST
 app.post('/api/transaksi', async (req, res) => {
   try {
     const { tanggal, jenis, keterangan, kategori, nominal, sumber } = req.body;
-    
     if (!tanggal || !jenis || !keterangan || !kategori || !nominal) {
       return res.status(400).json({ success: false, message: 'Semua field wajib diisi' });
     }
-    
+
     const transaksi = new Transaksi({
-      tanggal: new Date(tanggal),
-      jenis,
-      keterangan,
-      kategori,
-      nominal: parseFloat(nominal),
-      sumber: sumber || 'Kas Tunai'
+      tanggal: new Date(tanggal), jenis, keterangan, kategori,
+      nominal: parseFloat(nominal), sumber: sumber || 'Kas Tunai'
     });
-    
     await transaksi.save();
 
-    // Update anggaran jika pengeluaran
     if (jenis === 'pengeluaran') {
-      await Anggaran.updateOne(
-        { kategori: kategori },
-        { $inc: { terpakai: parseFloat(nominal) } }
-      );
+      await Anggaran.updateOne({ kategori }, { $inc: { terpakai: parseFloat(nominal) } });
     }
-    
+
     res.json({ success: true, data: transaksi, message: 'Transaksi berhasil disimpan' });
-  } catch (error) {
-    res.status(500).json({ success: false, message: error.message });
+  } catch (e) {
+    res.status(500).json({ success: false, message: e.message });
   }
 });
 
-// DELETE transaksi
+// TRANSAKSI - DELETE
 app.delete('/api/transaksi/:id', async (req, res) => {
   try {
     const transaksi = await Transaksi.findById(req.params.id);
-    if (!transaksi) {
-      return res.status(404).json({ success: false, message: 'Transaksi tidak ditemukan' });
-    }
-    
-    // Kembalikan anggaran
+    if (!transaksi) return res.status(404).json({ success: false, message: 'Tidak ditemukan' });
+
     if (transaksi.jenis === 'pengeluaran') {
-      await Anggaran.updateOne(
-        { kategori: transaksi.kategori },
-        { $inc: { terpakai: -transaksi.nominal } }
-      );
+      await Anggaran.updateOne({ kategori: transaksi.kategori }, { $inc: { terpakai: -transaksi.nominal } });
     }
-    
+
     await Transaksi.findByIdAndDelete(req.params.id);
     res.json({ success: true, message: 'Transaksi berhasil dihapus' });
-  } catch (error) {
-    res.status(500).json({ success: false, message: error.message });
+  } catch (e) {
+    res.status(500).json({ success: false, message: e.message });
   }
 });
 
-// --- STATS ROUTES ---
+// STATS
 app.get('/api/stats', async (req, res) => {
   try {
-    const { bulan, tahun } = req.query;
-    const currentMonth = bulan || (new Date().getMonth() + 1);
-    const currentYear = tahun || new Date().getFullYear();
-    
-    const startDate = new Date(currentYear, currentMonth - 1, 1);
-    const endDate = new Date(currentYear, currentMonth, 0);
-    
-    const transaksi = await Transaksi.find({
-      tanggal: { $gte: startDate, $lte: endDate }
-    });
+    const bulan = parseInt(req.query.bulan) || (new Date().getMonth() + 1);
+    const tahun = parseInt(req.query.tahun) || new Date().getFullYear();
 
-    // Data grafik harian
+    const startDate = new Date(tahun, bulan - 1, 1);
+    const endDate = new Date(tahun, bulan, 0, 23, 59, 59);
+
+    const transaksi = await Transaksi.find({ tanggal: { $gte: startDate, $lte: endDate } });
     const daysInMonth = endDate.getDate();
     const dailyData = [];
-    
+
     for (let i = 1; i <= daysInMonth; i++) {
-      const dayStart = new Date(currentYear, currentMonth - 1, i);
-      const dayEnd = new Date(currentYear, currentMonth - 1, i, 23, 59, 59);
-      
-      const dayTransaksi = transaksi.filter(t => {
-        const tDate = new Date(t.tanggal);
-        return tDate >= dayStart && tDate <= dayEnd;
+      const dayStart = new Date(tahun, bulan - 1, i);
+      const dayEnd = new Date(tahun, bulan - 1, i, 23, 59, 59);
+      const dayTrx = transaksi.filter(t => new Date(t.tanggal) >= dayStart && new Date(t.tanggal) <= dayEnd);
+      dailyData.push({
+        hari: i,
+        pemasukan: dayTrx.filter(t => t.jenis === 'pemasukan').reduce((s, t) => s + t.nominal, 0),
+        pengeluaran: dayTrx.filter(t => t.jenis === 'pengeluaran').reduce((s, t) => s + t.nominal, 0)
       });
-      
-      const pemasukan = dayTransaksi.filter(t => t.jenis === 'pemasukan').reduce((s, t) => s + t.nominal, 0);
-      const pengeluaran = dayTransaksi.filter(t => t.jenis === 'pengeluaran').reduce((s, t) => s + t.nominal, 0);
-      
-      dailyData.push({ hari: i, pemasukan, pengeluaran });
     }
 
-    // 5 pengeluaran terbesar
-    const pengeluaranList = transaksi
-      .filter(t => t.jenis === 'pengeluaran')
-      .sort((a, b) => b.nominal - a.nominal)
-      .slice(0, 5);
+    const pengeluaranTerbesar = transaksi.filter(t => t.jenis === 'pengeluaran').sort((a, b) => b.nominal - a.nominal).slice(0, 5);
 
-    // Per kategori
     const kategoriMap = {};
     transaksi.filter(t => t.jenis === 'pengeluaran').forEach(t => {
       if (!kategoriMap[t.kategori]) kategoriMap[t.kategori] = 0;
       kategoriMap[t.kategori] += t.nominal;
     });
-    
     const perKategori = Object.entries(kategoriMap).map(([nama, total]) => ({ nama, total }));
 
-    res.json({
-      success: true,
-      data: { dailyData, pengeluaranTerbesar: pengeluaranList, perKategori }
-    });
-  } catch (error) {
-    res.status(500).json({ success: false, message: error.message });
+    res.json({ success: true, data: { dailyData, pengeluaranTerbesar, perKategori } });
+  } catch (e) {
+    res.status(500).json({ success: false, message: e.message });
   }
 });
 
-// --- ANGGOTA ROUTES ---
+// ANGGOTA - GET
 app.get('/api/anggota', async (req, res) => {
   try {
-    const anggota = await Anggota.find().sort({ nama: 1 });
-    res.json({ success: true, data: anggota });
-  } catch (error) {
-    res.status(500).json({ success: false, message: error.message });
+    const data = await Anggota.find().sort({ nama: 1 });
+    res.json({ success: true, data });
+  } catch (e) {
+    res.status(500).json({ success: false, message: e.message });
   }
 });
 
+// ANGGOTA - POST
 app.post('/api/anggota', async (req, res) => {
   try {
     const { nama } = req.body;
     if (!nama) return res.status(400).json({ success: false, message: 'Nama wajib diisi' });
-    
     const anggota = new Anggota({ nama });
     await anggota.save();
     res.json({ success: true, data: anggota, message: 'Anggota berhasil ditambahkan' });
-  } catch (error) {
-    res.status(500).json({ success: false, message: error.message });
+  } catch (e) {
+    res.status(500).json({ success: false, message: e.message });
   }
 });
 
+// ANGGOTA - BAYAR
 app.put('/api/anggota/:id/bayar', async (req, res) => {
   try {
     const { nominal } = req.body;
     const anggota = await Anggota.findById(req.params.id);
     if (!anggota) return res.status(404).json({ success: false, message: 'Anggota tidak ditemukan' });
-    
+
     anggota.totalBayar += parseFloat(nominal);
     anggota.status = 'Sudah Bayar';
     await anggota.save();
 
-    // Otomatis catat transaksi pemasukan
     const transaksi = new Transaksi({
-      tanggal: new Date(),
-      jenis: 'pemasukan',
+      tanggal: new Date(), jenis: 'pemasukan',
       keterangan: `Iuran Kas - ${anggota.nama}`,
-      kategori: 'Iuran',
-      nominal: parseFloat(nominal),
-      sumber: 'Kas Tunai'
+      kategori: 'Iuran', nominal: parseFloat(nominal), sumber: 'Kas Tunai'
     });
     await transaksi.save();
-    
+
     res.json({ success: true, data: anggota, message: 'Pembayaran berhasil dicatat' });
-  } catch (error) {
-    res.status(500).json({ success: false, message: error.message });
+  } catch (e) {
+    res.status(500).json({ success: false, message: e.message });
   }
 });
 
+// ANGGOTA - DELETE
 app.delete('/api/anggota/:id', async (req, res) => {
   try {
     await Anggota.findByIdAndDelete(req.params.id);
     res.json({ success: true, message: 'Anggota berhasil dihapus' });
-  } catch (error) {
-    res.status(500).json({ success: false, message: error.message });
+  } catch (e) {
+    res.status(500).json({ success: false, message: e.message });
   }
 });
 
-// --- ANGGARAN ROUTES ---
+// ANGGARAN - GET
 app.get('/api/anggaran', async (req, res) => {
   try {
-    const anggaran = await Anggaran.find().sort({ createdAt: -1 });
-    res.json({ success: true, data: anggaran });
-  } catch (error) {
-    res.status(500).json({ success: false, message: error.message });
+    const data = await Anggaran.find().sort({ createdAt: -1 });
+    res.json({ success: true, data });
+  } catch (e) {
+    res.status(500).json({ success: false, message: e.message });
   }
 });
 
+// ANGGARAN - POST
 app.post('/api/anggaran', async (req, res) => {
   try {
     const { nama, kategori, limit, periode } = req.body;
-    if (!nama || !kategori || !limit) {
-      return res.status(400).json({ success: false, message: 'Semua field wajib diisi' });
-    }
-    
-    const anggaran = new Anggaran({ nama, kategori, limit: parseFloat(limit), periode });
+    if (!nama || !kategori || !limit) return res.status(400).json({ success: false, message: 'Semua field wajib diisi' });
+    const anggaran = new Anggaran({ nama, kategori, limit: parseFloat(limit), periode: periode || 'Bulanan' });
     await anggaran.save();
     res.json({ success: true, data: anggaran, message: 'Anggaran berhasil ditambahkan' });
-  } catch (error) {
-    res.status(500).json({ success: false, message: error.message });
+  } catch (e) {
+    res.status(500).json({ success: false, message: e.message });
   }
 });
 
+// ANGGARAN - DELETE
 app.delete('/api/anggaran/:id', async (req, res) => {
   try {
     await Anggaran.findByIdAndDelete(req.params.id);
     res.json({ success: true, message: 'Anggaran berhasil dihapus' });
-  } catch (error) {
-    res.status(500).json({ success: false, message: error.message });
+  } catch (e) {
+    res.status(500).json({ success: false, message: e.message });
   }
 });
 
-// --- PENGATURAN ROUTES ---
+// PENGATURAN - GET
 app.get('/api/pengaturan', async (req, res) => {
   try {
-    let pengaturan = await Pengaturan.findOne();
-    if (!pengaturan) {
-      pengaturan = new Pengaturan();
-      await pengaturan.save();
-    }
-    res.json({ success: true, data: pengaturan });
-  } catch (error) {
-    res.status(500).json({ success: false, message: error.message });
+    let data = await Pengaturan.findOne();
+    if (!data) { data = new Pengaturan(); await data.save(); }
+    res.json({ success: true, data });
+  } catch (e) {
+    res.status(500).json({ success: false, message: e.message });
   }
 });
 
+// PENGATURAN - PUT
 app.put('/api/pengaturan', async (req, res) => {
   try {
+    let data = await Pengaturan.findOne();
+    if (!data) data = new Pengaturan();
     const { namaKelas, bendahara, iuranPerBulan, tahunAjaran } = req.body;
-    let pengaturan = await Pengaturan.findOne();
-    
-    if (!pengaturan) {
-      pengaturan = new Pengaturan();
-    }
-    
-    if (namaKelas) pengaturan.namaKelas = namaKelas;
-    if (bendahara) pengaturan.bendahara = bendahara;
-    if (iuranPerBulan) pengaturan.iuranPerBulan = parseFloat(iuranPerBulan);
-    if (tahunAjaran) pengaturan.tahunAjaran = tahunAjaran;
-    
-    await pengaturan.save();
-    res.json({ success: true, data: pengaturan, message: 'Pengaturan berhasil disimpan' });
-  } catch (error) {
-    res.status(500).json({ success: false, message: error.message });
+    if (namaKelas) data.namaKelas = namaKelas;
+    if (bendahara) data.bendahara = bendahara;
+    if (iuranPerBulan) data.iuranPerBulan = parseFloat(iuranPerBulan);
+    if (tahunAjaran) data.tahunAjaran = tahunAjaran;
+    await data.save();
+    res.json({ success: true, data, message: 'Pengaturan berhasil disimpan' });
+  } catch (e) {
+    res.status(500).json({ success: false, message: e.message });
   }
 });
 
-// Serve index.html
+// Serve HTML untuk semua route selain API
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '../public/index.html'));
 });
 
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
 
 module.exports = app;
