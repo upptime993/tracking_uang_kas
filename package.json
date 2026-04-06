@@ -1,0 +1,19 @@
+{
+  "name": "kas-kelas-x-rpl",
+  "version": "1.0.0",
+  "description": "Web Manajemen Kas Kelas X RPL",
+  "main": "api/index.js",
+  "scripts": {
+    "start": "node api/index.js",
+    "dev": "nodemon api/index.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "mongoose": "^7.0.3"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.22"
+  }
+}
