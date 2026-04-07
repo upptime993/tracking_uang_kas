@@ -50,38 +50,29 @@ body{
   transition:background 0.3s,color 0.3s;
 }
 
-/* SCROLLBAR */
 ::-webkit-scrollbar{width:3px;}
 ::-webkit-scrollbar-track{background:transparent;}
 ::-webkit-scrollbar-thumb{background:var(--accent-purple);border-radius:2px;}
 
-/* ===== PAGES ===== */
 .page{display:none;padding:0 0 90px;min-height:100vh;}
 .page.active{display:block;}
 
-/* ANIMASI PAGE */
 @keyframes pageIn{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
-@keyframes slideLeft{from{opacity:0;transform:translateX(30px);}to{opacity:1;transform:translateX(0);}}
-@keyframes slideRight{from{opacity:0;transform:translateX(-30px);}to{opacity:1;transform:translateX(0);}}
 @keyframes fadeUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
 @keyframes scaleIn{from{opacity:0;transform:scale(0.95);}to{opacity:1;transform:scale(1);}}
 @keyframes bounceIn{0%{transform:scale(0.3);opacity:0;}50%{transform:scale(1.05);}70%{transform:scale(0.9);}100%{transform:scale(1);opacity:1;}}
 @keyframes spin{to{transform:rotate(360deg);}}
-@keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.5;}}
-@keyframes shimmer{0%{background-position:-200% 0;}100%{background-position:200% 0;}}
 @keyframes slideUp{from{transform:translateY(100%);}to{transform:translateY(0);}}
-@keyframes ripple{to{transform:scale(4);opacity:0;}}
+@keyframes rippleAnim{to{transform:scale(4);opacity:0;}}
+@keyframes shimmer{0%{background-position:-200% 0;}100%{background-position:200% 0;}}
 
 .page.active{animation:pageIn 0.35s cubic-bezier(0.4,0,0.2,1);}
 
-/* ===== HEADER ===== */
+/* HEADER */
 .header{
   padding:20px 20px 12px;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  position:sticky;
-  top:0;
+  display:flex;justify-content:space-between;align-items:center;
+  position:sticky;top:0;
   background:var(--bg-primary);
   z-index:100;
   backdrop-filter:blur(10px);
@@ -92,23 +83,19 @@ body{
 .header-title{font-size:18px;font-weight:700;}
 
 .theme-btn{
-  font-size:22px;
-  cursor:pointer;
+  font-size:22px;cursor:pointer;
   transition:transform 0.3s ease;
-  user-select:none;
-  display:inline-block;
+  user-select:none;display:inline-block;
 }
 .theme-btn:hover{transform:scale(1.2) rotate(20deg);}
 .theme-btn.switching{animation:bounceIn 0.5s ease;}
 
-/* ===== SALDO CARD ===== */
+/* SALDO CARD */
 .saldo-card{
   margin:10px 16px;
   background:linear-gradient(135deg,#1e1e3f 0%,#252550 50%,#1a1a3a 100%);
-  border-radius:20px;
-  padding:24px;
-  position:relative;
-  overflow:hidden;
+  border-radius:20px;padding:24px;
+  position:relative;overflow:hidden;
   border:1px solid #2a2a5a;
   animation:scaleIn 0.4s ease;
   transition:transform 0.2s,box-shadow 0.2s;
@@ -124,13 +111,13 @@ body{
 .saldo-out{font-size:14px;font-weight:600;color:#EF5350;}
 .saldo-sync{font-size:10px;color:rgba(255,255,255,0.4);margin-top:10px;}
 
-/* ===== MINI CARDS ===== */
+/* MINI CARDS */
 .mini-cards{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 16px;}
-.mini-card{border-radius:16px;padding:16px;cursor:pointer;transition:transform 0.2s,box-shadow 0.2s;animation:fadeUp 0.4s ease both;}
-.mini-card:nth-child(1){animation-delay:0.05s;}
-.mini-card:nth-child(2){animation-delay:0.1s;}
-.mini-card:nth-child(3){animation-delay:0.15s;}
-.mini-card:nth-child(4){animation-delay:0.2s;}
+.mini-card{
+  border-radius:16px;padding:16px;cursor:pointer;
+  transition:transform 0.2s,box-shadow 0.2s;
+  animation:fadeUp 0.4s ease both;
+}
 .mini-card:hover{transform:translateY(-3px);box-shadow:0 8px 25px rgba(0,0,0,0.3);}
 .mini-card:active{transform:scale(0.97);}
 .mini-card.blue{background:linear-gradient(135deg,#1565C0,#1E88E5);}
@@ -143,7 +130,7 @@ body{
 .mini-card-action-text .title{font-size:13px;font-weight:600;color:var(--text-primary);}
 .mini-card-action-text .sub{font-size:10px;color:var(--text-secondary);}
 
-/* ===== SECTION ===== */
+/* SECTION */
 .section{margin:16px 16px 0;}
 .section-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;}
 .section-title{font-size:15px;font-weight:700;}
@@ -151,7 +138,7 @@ body{
 .section-link{font-size:12px;color:var(--accent-purple);cursor:pointer;transition:opacity 0.2s;}
 .section-link:hover{opacity:0.7;}
 
-/* ===== TRANSAKSI ===== */
+/* TRANSAKSI */
 .transaksi-group-date{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;margin-top:12px;}
 .transaksi-date{font-size:11px;color:var(--text-secondary);font-weight:600;}
 .transaksi-date-total{font-size:11px;font-weight:600;}
@@ -159,14 +146,9 @@ body{
 .transaksi-date-total.minus{color:var(--accent-red);}
 
 .transaksi-item{
-  background:var(--bg-card);
-  border-radius:14px;
-  padding:14px;
-  display:flex;
-  align-items:center;
-  gap:12px;
-  margin-bottom:8px;
-  border:1px solid var(--border);
+  background:var(--bg-card);border-radius:14px;padding:14px;
+  display:flex;align-items:center;gap:12px;
+  margin-bottom:8px;border:1px solid var(--border);
   cursor:pointer;
   transition:all 0.25s cubic-bezier(0.4,0,0.2,1);
   animation:fadeUp 0.3s ease both;
@@ -174,7 +156,11 @@ body{
 .transaksi-item:hover{background:var(--bg-card2);transform:translateX(4px);border-color:var(--accent-purple);}
 .transaksi-item:active{transform:scale(0.98);}
 
-.transaksi-icon{width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;transition:transform 0.2s;}
+.transaksi-icon{
+  width:42px;height:42px;border-radius:12px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:18px;flex-shrink:0;transition:transform 0.2s;
+}
 .transaksi-item:hover .transaksi-icon{transform:scale(1.1);}
 .transaksi-icon.in{background:rgba(38,166,154,0.2);color:#26A69A;}
 .transaksi-icon.out{background:rgba(239,83,80,0.2);color:#EF5350;}
@@ -187,12 +173,12 @@ body{
 .transaksi-amount .amount.minus{color:#EF5350;}
 .transaksi-amount .source{font-size:10px;color:var(--text-muted);}
 
-/* ===== EMPTY STATE ===== */
+/* EMPTY STATE */
 .empty-state{text-align:center;padding:40px 20px;color:var(--text-secondary);animation:fadeUp 0.4s ease;}
 .empty-state i{font-size:40px;margin-bottom:12px;opacity:0.3;display:block;}
 .empty-state p{font-size:13px;line-height:1.6;}
 
-/* ===== SKELETON LOADING ===== */
+/* SKELETON */
 .skeleton{
   background:linear-gradient(90deg,var(--bg-card) 25%,var(--bg-card2) 50%,var(--bg-card) 75%);
   background-size:200% 100%;
@@ -201,37 +187,20 @@ body{
 }
 .skeleton-item{height:68px;margin-bottom:8px;}
 
-/* ===== BOTTOM NAV ===== */
+/* BOTTOM NAV */
 .bottom-nav{
-  position:fixed;
-  bottom:0;
-  left:50%;
-  transform:translateX(-50%);
-  width:100%;
-  max-width:480px;
-  background:var(--nav-bg);
-  border-top:1px solid var(--border);
-  display:flex;
-  align-items:center;
-  justify-content:space-around;
-  padding:8px 10px 16px;
-  z-index:1000;
+  position:fixed;bottom:0;left:50%;transform:translateX(-50%);
+  width:100%;max-width:480px;
+  background:var(--nav-bg);border-top:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-around;
+  padding:8px 10px 16px;z-index:1000;
   transition:background 0.3s,border 0.3s;
   box-shadow:0 -4px 20px rgba(0,0,0,0.15);
 }
-
 .nav-item{
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  gap:3px;
-  cursor:pointer;
-  flex:1;
-  padding:4px;
-  border-radius:12px;
-  transition:all 0.2s;
-  position:relative;
-  overflow:hidden;
+  display:flex;flex-direction:column;align-items:center;gap:3px;
+  cursor:pointer;flex:1;padding:4px;border-radius:12px;
+  transition:all 0.2s;position:relative;overflow:hidden;
 }
 .nav-item:active{transform:scale(0.9);}
 .nav-item i{font-size:20px;color:var(--text-muted);transition:all 0.25s cubic-bezier(0.4,0,0.2,1);}
@@ -242,133 +211,104 @@ body{
 .nav-add{
   width:58px;height:58px;
   background:linear-gradient(135deg,var(--accent-purple),#8b5cf6);
-  border-radius:18px;
-  display:flex;align-items:center;justify-content:center;
+  border-radius:18px;display:flex;align-items:center;justify-content:center;
   cursor:pointer;
   box-shadow:0 4px 20px rgba(108,99,255,0.5);
   transition:all 0.25s cubic-bezier(0.4,0,0.2,1);
-  margin-top:-20px;
-  flex-shrink:0;
-  position:relative;
-  overflow:hidden;
+  margin-top:-20px;flex-shrink:0;
+  position:relative;overflow:hidden;
 }
 .nav-add:hover{transform:scale(1.08) translateY(-2px);box-shadow:0 8px 30px rgba(108,99,255,0.6);}
 .nav-add:active{transform:scale(0.95);}
 .nav-add i{font-size:26px;color:white;transition:transform 0.3s;}
 .nav-add:hover i{transform:rotate(90deg);}
 
-/* ===== RIPPLE EFFECT ===== */
-.ripple-container{position:relative;overflow:hidden;}
+/* RIPPLE */
 .ripple{
   position:absolute;border-radius:50%;
   background:rgba(108,99,255,0.3);
-  transform:scale(0);
-  animation:ripple 0.6s linear;
+  transform:scale(0);animation:rippleAnim 0.6s linear;
   pointer-events:none;
 }
 
-/* ===== MODAL ===== */
+/* MODAL */
 .modal-overlay{
-  display:none;
-  position:fixed;inset:0;
-  background:rgba(0,0,0,0.7);
-  z-index:2000;
+  display:none;position:fixed;inset:0;
+  background:rgba(0,0,0,0.7);z-index:2000;
   backdrop-filter:blur(6px);
-  transition:opacity 0.3s;
 }
 .modal-overlay.active{display:flex;align-items:flex-end;justify-content:center;}
-
 .modal{
   background:var(--bg-secondary);
   border-radius:24px 24px 0 0;
-  width:100%;max-width:480px;
-  padding:24px;
+  width:100%;max-width:480px;padding:24px;
   animation:slideUp 0.35s cubic-bezier(0.4,0,0.2,1);
-  max-height:92vh;
-  overflow-y:auto;
+  max-height:92vh;overflow-y:auto;
   transition:background 0.3s;
 }
-
 .modal-handle{width:40px;height:4px;background:var(--border);border-radius:2px;margin:0 auto 20px;}
 .modal-title{font-size:18px;font-weight:700;text-align:center;margin-bottom:20px;}
 
-/* ===== FORM ===== */
+/* FORM */
 .form-group{margin-bottom:14px;}
-.form-label{font-size:12px;color:var(--text-secondary);margin-bottom:6px;display:block;}
-
+.form-label{font-size:12px;color:var(--text-secondary);margin-bottom:6px;display:block;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;}
 .form-input{
-  width:100%;
-  background:var(--bg-card);
-  border:1.5px solid var(--border);
-  border-radius:12px;
-  padding:14px 16px;
-  color:var(--text-primary);
-  font-size:14px;
-  outline:none;
-  transition:all 0.25s;
+  width:100%;background:var(--bg-card);
+  border:1.5px solid var(--border);border-radius:12px;
+  padding:14px 16px;color:var(--text-primary);
+  font-size:14px;outline:none;transition:all 0.25s;
 }
 .form-input:focus{border-color:var(--accent-purple);box-shadow:0 0 0 3px rgba(108,99,255,0.15);}
 .form-input::placeholder{color:var(--text-muted);}
-
 .form-textarea{
-  width:100%;
-  background:var(--bg-card);
-  border:1.5px solid var(--border);
-  border-radius:12px;
-  padding:14px 16px;
-  color:var(--text-primary);
-  font-size:14px;
-  outline:none;
-  transition:all 0.25s;
-  resize:none;
-  min-height:100px;
-  font-family:inherit;
+  width:100%;background:var(--bg-card);
+  border:1.5px solid var(--border);border-radius:12px;
+  padding:14px 16px;color:var(--text-primary);
+  font-size:14px;outline:none;transition:all 0.25s;
+  resize:none;min-height:110px;font-family:inherit;
 }
 .form-textarea:focus{border-color:var(--accent-purple);box-shadow:0 0 0 3px rgba(108,99,255,0.15);}
 .form-textarea::placeholder{color:var(--text-muted);}
-
 .form-select{
-  width:100%;
-  background:var(--bg-card);
-  border:1.5px solid var(--border);
-  border-radius:12px;
-  padding:14px 16px;
-  color:var(--text-primary);
-  font-size:14px;
-  outline:none;
-  cursor:pointer;
-  transition:all 0.25s;
+  width:100%;background:var(--bg-card);
+  border:1.5px solid var(--border);border-radius:12px;
+  padding:14px 16px;color:var(--text-primary);
+  font-size:14px;outline:none;cursor:pointer;transition:all 0.25s;
 }
 .form-select:focus{border-color:var(--accent-purple);}
 .form-select option{background:var(--bg-card);}
 
-/* ===== TYPE BUTTONS ===== */
+.toggle-eye{
+  position:absolute;right:14px;top:50%;transform:translateY(-50%);
+  cursor:pointer;color:var(--text-muted);font-size:16px;
+  transition:color 0.2s;z-index:1;
+}
+.toggle-eye:hover{color:var(--accent-purple);}
+
+/* TYPE BUTTONS */
 .type-buttons{display:flex;gap:8px;margin-bottom:16px;}
 .type-btn{
   flex:1;padding:12px;border-radius:12px;
-  border:1.5px solid var(--border);
-  background:var(--bg-card);
-  color:var(--text-secondary);
-  font-size:13px;font-weight:600;
-  cursor:pointer;
-  transition:all 0.2s;text-align:center;
+  border:1.5px solid var(--border);background:var(--bg-card);
+  color:var(--text-secondary);font-size:13px;font-weight:600;
+  cursor:pointer;transition:all 0.2s;text-align:center;
 }
 .type-btn:hover{border-color:var(--accent-purple);}
 .type-btn.active-in{background:var(--accent-green);color:white;border-color:var(--accent-green);}
 .type-btn.active-out{background:var(--accent-red);color:white;border-color:var(--accent-red);}
 
-/* ===== BUTTONS ===== */
+/* BUTTONS */
 .btn{
   width:100%;padding:16px;border-radius:14px;border:none;
   font-size:15px;font-weight:700;cursor:pointer;
   transition:all 0.25s cubic-bezier(0.4,0,0.2,1);
   position:relative;overflow:hidden;
+  display:flex;align-items:center;justify-content:center;gap:8px;
 }
 .btn:active{transform:scale(0.98);}
 .btn-primary{
   background:linear-gradient(135deg,var(--accent-purple),#8b5cf6);
-  color:white;
-  box-shadow:0 4px 15px rgba(108,99,255,0.4);
+  color:white;box-shadow:0 4px 15px rgba(108,99,255,0.4);
 }
 .btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 25px rgba(108,99,255,0.5);}
 .btn-danger{background:var(--accent-red);color:white;}
@@ -377,116 +317,82 @@ body{
 .btn-outline:hover{border-color:var(--accent-purple);color:var(--accent-purple);}
 .btn:disabled{opacity:0.6;cursor:not-allowed;transform:none !important;}
 
-/* ===== CIRCULAR PROGRESS ===== */
+/* CIRCULAR PROGRESS */
 .circular-progress-overlay{
-  display:none;
-  position:fixed;inset:0;
-  background:rgba(0,0,0,0.5);
-  z-index:9999;
+  display:none;position:fixed;inset:0;
+  background:rgba(0,0,0,0.55);z-index:9999;
   align-items:center;justify-content:center;
   flex-direction:column;gap:16px;
   backdrop-filter:blur(4px);
 }
 .circular-progress-overlay.active{display:flex;animation:fadeUp 0.2s ease;}
-
 .circular-progress{
-  width:70px;height:70px;
-  position:relative;
+  width:74px;height:74px;position:relative;
   display:flex;align-items:center;justify-content:center;
 }
-.circular-progress svg{
-  position:absolute;
-  top:0;left:0;
-  transform:rotate(-90deg);
-}
-.circular-progress .circle-bg{fill:none;stroke:rgba(255,255,255,0.1);stroke-width:6;}
-.circular-progress .circle-fill{
+.circular-progress svg{position:absolute;top:0;left:0;transform:rotate(-90deg);}
+.circle-bg{fill:none;stroke:rgba(255,255,255,0.1);stroke-width:6;}
+.circle-fill{
   fill:none;stroke:var(--accent-purple);stroke-width:6;
-  stroke-linecap:round;
-  stroke-dasharray:188;
-  stroke-dashoffset:188;
+  stroke-linecap:round;stroke-dasharray:188;stroke-dashoffset:188;
   transition:stroke-dashoffset 0.3s ease;
 }
-.circular-progress .circle-icon{font-size:24px;z-index:1;}
-.progress-text{color:white;font-size:13px;font-weight:600;text-align:center;}
+.circle-icon{font-size:26px;z-index:1;}
+.progress-text{color:white;font-size:13px;font-weight:600;text-align:center;max-width:200px;}
 
-/* ===== SEARCH BAR ===== */
-.search-bar{
-  margin:0 16px 12px;
-  position:relative;
-  animation:fadeUp 0.3s ease;
-}
-.search-bar i{
-  position:absolute;left:14px;top:50%;
-  transform:translateY(-50%);
-  color:var(--text-muted);font-size:14px;
-}
+/* SEARCH */
+.search-bar{margin:0 16px 12px;position:relative;animation:fadeUp 0.3s ease;}
+.search-bar i{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--text-muted);font-size:14px;}
 .search-input{
-  width:100%;
-  background:var(--bg-card);
-  border:1.5px solid var(--border);
-  border-radius:12px;
-  padding:12px 16px 12px 40px;
-  color:var(--text-primary);
-  font-size:14px;outline:none;
-  transition:all 0.25s;
+  width:100%;background:var(--bg-card);
+  border:1.5px solid var(--border);border-radius:12px;
+  padding:12px 16px 12px 42px;color:var(--text-primary);
+  font-size:14px;outline:none;transition:all 0.25s;
 }
 .search-input:focus{border-color:var(--accent-purple);box-shadow:0 0 0 3px rgba(108,99,255,0.15);}
 .search-input::placeholder{color:var(--text-muted);}
 
-/* ===== FILTER TABS ===== */
+/* FILTER TABS */
 .filter-tabs{
-  display:flex;gap:8px;
-  padding:0 16px;margin:0 0 12px;
+  display:flex;gap:8px;padding:0 16px;margin:0 0 12px;
   overflow-x:auto;scrollbar-width:none;
 }
 .filter-tabs::-webkit-scrollbar{display:none;}
 .filter-tab{
   padding:8px 16px;border-radius:20px;
-  border:1.5px solid var(--border);
-  background:var(--bg-card);
-  color:var(--text-secondary);
-  font-size:12px;font-weight:600;
-  cursor:pointer;white-space:nowrap;
-  transition:all 0.2s;flex-shrink:0;
+  border:1.5px solid var(--border);background:var(--bg-card);
+  color:var(--text-secondary);font-size:12px;font-weight:600;
+  cursor:pointer;white-space:nowrap;transition:all 0.2s;flex-shrink:0;
 }
 .filter-tab.active{background:var(--accent-purple);color:white;border-color:var(--accent-purple);}
 .filter-tab:hover:not(.active){border-color:var(--accent-purple);color:var(--accent-purple);}
 
-/* ===== WEEK TABS ===== */
+/* WEEK TABS */
 .week-tabs{
-  display:flex;gap:8px;
-  padding:0 16px;margin:0 0 12px;
+  display:flex;gap:8px;padding:0 16px;margin:0 0 12px;
   overflow-x:auto;scrollbar-width:none;
 }
 .week-tabs::-webkit-scrollbar{display:none;}
 .week-tab{
-  padding:8px 16px;border-radius:20px;
-  border:1.5px solid var(--border);
-  background:var(--bg-card);
-  color:var(--text-secondary);
-  font-size:12px;font-weight:600;
-  cursor:pointer;white-space:nowrap;
-  transition:all 0.25s;flex-shrink:0;
-  position:relative;
+  padding:8px 18px;border-radius:20px;
+  border:1.5px solid var(--border);background:var(--bg-card);
+  color:var(--text-secondary);font-size:12px;font-weight:600;
+  cursor:pointer;white-space:nowrap;transition:all 0.25s;flex-shrink:0;
 }
 .week-tab.active{background:var(--accent-purple);color:white;border-color:var(--accent-purple);transform:scale(1.05);}
 .week-tab:hover:not(.active){border-color:var(--accent-purple);color:var(--accent-purple);}
 
-/* ===== MONTH SELECTOR ===== */
+/* MONTH SELECTOR */
 .month-selector{
   display:flex;align-items:center;justify-content:space-between;
-  padding:12px 16px;
-  background:var(--bg-card);
-  margin:0 16px 12px;
-  border-radius:12px;border:1px solid var(--border);
-  transition:all 0.2s;
+  padding:12px 16px;background:var(--bg-card);
+  margin:0 16px 12px;border-radius:12px;border:1px solid var(--border);
 }
 .month-nav{font-size:20px;cursor:pointer;color:var(--text-secondary);padding:4px 8px;border-radius:8px;transition:all 0.2s;}
 .month-nav:hover{background:var(--bg-card2);color:var(--accent-purple);}
 .month-text{font-size:14px;font-weight:600;}
 
-/* ===== STATS PAGE ===== */
+/* STATS */
 .chart-container{background:var(--bg-card);border-radius:16px;padding:16px;margin-bottom:12px;border:1px solid var(--border);}
 .chart-title{font-size:13px;font-weight:600;margin-bottom:12px;}
 .chart-wrapper{position:relative;height:180px;}
@@ -495,26 +401,20 @@ body{
   background:var(--bg-card);border-radius:12px;padding:14px;
   display:flex;align-items:center;gap:12px;
   margin-bottom:8px;border:1px solid var(--border);
-  animation:fadeUp 0.3s ease both;
-  transition:all 0.2s;
+  animation:fadeUp 0.3s ease both;transition:all 0.2s;
 }
 .top-item:hover{transform:translateX(4px);border-color:var(--accent-purple);}
-.top-rank{
-  width:28px;height:28px;background:var(--accent-purple);
-  border-radius:8px;display:flex;align-items:center;justify-content:center;
-  font-size:12px;font-weight:700;flex-shrink:0;
-}
+.top-rank{width:28px;height:28px;background:var(--accent-purple);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;}
 .top-info{flex:1;}
 .top-name{font-size:13px;font-weight:600;}
 .top-cat{font-size:11px;color:var(--text-secondary);}
 .top-amount{font-size:13px;font-weight:700;color:var(--accent-red);}
 
-/* ===== WALLET PAGE ===== */
+/* WALLET */
 .wallet-total-card{
   background:linear-gradient(135deg,#1e1e3f,#252550);
-  border-radius:20px;padding:24px;
-  margin:10px 16px;border:1px solid #2a2a5a;
-  animation:scaleIn 0.4s ease;
+  border-radius:20px;padding:24px;margin:10px 16px;
+  border:1px solid #2a2a5a;animation:scaleIn 0.4s ease;
 }
 .wallet-total-label{font-size:10px;color:rgba(255,255,255,0.5);letter-spacing:1px;text-transform:uppercase;}
 .wallet-total-amount{font-size:32px;font-weight:800;margin:6px 0;color:white;}
@@ -524,7 +424,7 @@ body{
 .wallet-meta .sisa{color:#26A69A;}
 .wallet-meta .live{color:rgba(255,255,255,0.4);}
 
-/* ===== SISWA ITEM ===== */
+/* SISWA */
 .siswa-item{
   background:var(--bg-card);border-radius:14px;padding:14px 16px;
   display:flex;align-items:center;gap:12px;margin-bottom:8px;
@@ -533,9 +433,8 @@ body{
   animation:fadeUp 0.3s ease both;
 }
 .siswa-item:hover{background:var(--bg-card2);transform:translateX(2px);}
-
 .siswa-avatar{
-  width:40px;height:40px;border-radius:12px;
+  width:42px;height:42px;border-radius:12px;
   background:linear-gradient(135deg,var(--accent-purple),#8b5cf6);
   display:flex;align-items:center;justify-content:center;
   font-size:14px;font-weight:700;flex-shrink:0;color:white;
@@ -552,7 +451,7 @@ body{
 .badge-paid{background:rgba(38,166,154,0.2);color:var(--accent-green);font-size:10px;padding:4px 8px;border-radius:20px;font-weight:600;white-space:nowrap;}
 .badge-unpaid{background:rgba(239,83,80,0.2);color:var(--accent-red);font-size:10px;padding:4px 8px;border-radius:20px;font-weight:600;white-space:nowrap;}
 
-/* ===== ANGGARAN ===== */
+/* ANGGARAN */
 .anggaran-item{background:var(--bg-card);border-radius:14px;padding:16px;margin-bottom:10px;border:1px solid var(--border);transition:all 0.2s;animation:fadeUp 0.3s ease;}
 .anggaran-item:hover{transform:translateY(-2px);box-shadow:0 4px 15px rgba(0,0,0,0.15);}
 .anggaran-header{display:flex;justify-content:space-between;margin-bottom:8px;}
@@ -568,13 +467,12 @@ body{
 .anggaran-bar-fill.danger{background:var(--accent-red);}
 .anggaran-footer{display:flex;justify-content:space-between;font-size:11px;color:var(--text-secondary);}
 
-/* ===== ME PAGE ===== */
+/* ME */
 .profile-card{
   background:linear-gradient(135deg,#1e1e3f,#252550);
   border-radius:20px;padding:28px;
-  margin:10px 16px 16px;
-  text-align:center;border:1px solid #2a2a5a;
-  animation:scaleIn 0.4s ease;
+  margin:10px 16px 16px;text-align:center;
+  border:1px solid #2a2a5a;animation:scaleIn 0.4s ease;
 }
 .profile-avatar{
   width:72px;height:72px;
@@ -611,7 +509,7 @@ body{
 .menu-sub{font-size:11px;color:var(--text-secondary);margin-top:2px;}
 .menu-arrow{color:var(--text-muted);font-size:14px;}
 
-/* ===== ACTION BUTTONS ===== */
+/* ACTION BUTTONS */
 .delete-btn{
   background:rgba(239,83,80,0.15);border:none;color:var(--accent-red);
   width:32px;height:32px;border-radius:8px;cursor:pointer;
@@ -626,87 +524,48 @@ body{
 }
 .pay-btn:hover{background:rgba(38,166,154,0.3);transform:scale(1.05);}
 
-/* ===== LOGIN PAGE ===== */
-#page-login{
-  display:flex;flex-direction:column;
-  align-items:center;justify-content:center;
-  min-height:100vh;padding:30px 24px;
-  background:var(--bg-primary);
-}
-.login-logo{
-  width:80px;height:80px;
-  background:linear-gradient(135deg,var(--accent-purple),#8b5cf6);
-  border-radius:24px;display:flex;align-items:center;justify-content:center;
-  font-size:36px;margin-bottom:20px;
-  box-shadow:0 12px 40px rgba(108,99,255,0.4);
-  animation:bounceIn 0.6s ease;
-}
-.login-title{font-size:24px;font-weight:800;margin-bottom:6px;text-align:center;}
-.login-sub{font-size:13px;color:var(--text-secondary);margin-bottom:32px;text-align:center;line-height:1.5;}
-.login-card{
-  width:100%;max-width:380px;
-  background:var(--bg-card);border-radius:20px;
-  padding:28px;border:1px solid var(--border);
-  animation:fadeUp 0.5s ease 0.2s both;
-}
-.login-card .form-group{margin-bottom:16px;}
-.password-toggle{position:relative;}
-.password-toggle .form-input{padding-right:48px;}
-.toggle-eye{
-  position:absolute;right:14px;top:50%;transform:translateY(-50%);
-  cursor:pointer;color:var(--text-muted);font-size:16px;
-  transition:color 0.2s;
-}
-.toggle-eye:hover{color:var(--accent-purple);}
-
-.login-info{
-  background:rgba(108,99,255,0.1);border:1px solid rgba(108,99,255,0.3);
-  border-radius:10px;padding:12px;margin-bottom:16px;
-  font-size:12px;color:var(--text-secondary);text-align:center;line-height:1.6;
-}
-
-/* ===== DETAIL MODAL ===== */
+/* DETAIL ROW */
 .detail-row{display:flex;justify-content:space-between;padding:11px 0;border-bottom:1px solid var(--border);font-size:13px;}
 .detail-row:last-child{border-bottom:none;}
 .detail-row label{color:var(--text-secondary);}
 .detail-row span{font-weight:600;text-align:right;max-width:55%;}
 
-/* ===== KATEGORI BARS ===== */
+/* KATEGORI BAR */
 .kategori-bar-item{margin-bottom:12px;}
 .kategori-bar-header{display:flex;justify-content:space-between;margin-bottom:5px;font-size:12px;}
 .kategori-bar-bg{height:7px;background:var(--border);border-radius:4px;overflow:hidden;}
 .kategori-bar-fill{height:100%;background:var(--accent-purple);border-radius:4px;transition:width 0.8s cubic-bezier(0.4,0,0.2,1);}
 
-/* ===== SETTING CARD ===== */
-.setting-card{background:var(--bg-card);border-radius:16px;padding:20px;margin:0 16px 12px;border:1px solid var(--border);}
-.setting-title{font-size:12px;font-weight:700;margin-bottom:14px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:1px;}
-
-/* ===== USER ITEM ===== */
+/* USER ITEM */
 .user-item{
   background:var(--bg-card);border-radius:14px;padding:14px 16px;
   display:flex;align-items:center;gap:12px;margin-bottom:8px;
   border:1px solid var(--border);transition:all 0.2s;
   animation:fadeUp 0.3s ease both;
 }
-.user-avatar{
-  width:40px;height:40px;border-radius:12px;
-  display:flex;align-items:center;justify-content:center;
-  font-size:14px;font-weight:700;flex-shrink:0;color:white;
-}
+.user-avatar{width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;flex-shrink:0;color:white;}
 .user-avatar.admin{background:linear-gradient(135deg,#EF5350,#E53935);}
 .user-avatar.bendahara{background:linear-gradient(135deg,#26A69A,#00897B);}
 .role-badge{font-size:10px;padding:3px 8px;border-radius:20px;font-weight:600;}
 .role-badge.admin{background:rgba(239,83,80,0.2);color:#EF5350;}
 .role-badge.bendahara{background:rgba(38,166,154,0.2);color:#26A69A;}
 
-/* ===== TOAST ===== */
+/* STATS SUMMARY */
+.stats-summary{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:0 16px 12px;}
+.stats-box{background:var(--bg-card);border-radius:14px;padding:14px;border:1px solid var(--border);text-align:center;animation:scaleIn 0.3s ease;}
+.stats-box-label{font-size:10px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;}
+.stats-box-val{font-size:18px;font-weight:800;}
+.stats-box-val.green{color:var(--accent-green);}
+.stats-box-val.red{color:var(--accent-red);}
+
+/* TOAST */
 .toast{
   position:fixed;top:20px;left:50%;
   transform:translateX(-50%) translateY(-120px);
   background:var(--bg-card2);color:var(--text-primary);
   padding:14px 24px;border-radius:14px;
-  font-size:13px;font-weight:600;
-  z-index:9999;transition:transform 0.4s cubic-bezier(0.4,0,0.2,1);
+  font-size:13px;font-weight:600;z-index:9999;
+  transition:transform 0.4s cubic-bezier(0.4,0,0.2,1);
   border:1px solid var(--border);white-space:nowrap;
   max-width:90%;box-shadow:0 8px 30px rgba(0,0,0,0.3);
 }
@@ -715,24 +574,7 @@ body{
 .toast.error{border-color:var(--accent-red);}
 .toast.warning{border-color:#FF9800;}
 
-/* ===== DIVIDER ===== */
 .divider{height:1px;background:var(--border);margin:16px 0;}
-
-/* ===== STATS SUMMARY ===== */
-.stats-summary{
-  display:grid;grid-template-columns:1fr 1fr;gap:10px;
-  margin:0 16px 12px;
-}
-.stats-box{
-  background:var(--bg-card);border-radius:14px;
-  padding:14px;border:1px solid var(--border);
-  text-align:center;animation:scaleIn 0.3s ease;
-}
-.stats-box-label{font-size:10px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;}
-.stats-box-val{font-size:18px;font-weight:800;}
-.stats-box-val.green{color:var(--accent-green);}
-.stats-box-val.red{color:var(--accent-red);}
-.stats-box-val.purple{color:var(--accent-purple);}
 
 @media(min-width:480px){body{border-left:1px solid var(--border);border-right:1px solid var(--border);}}
 </style>
@@ -742,11 +584,11 @@ body{
 <!-- CIRCULAR PROGRESS OVERLAY -->
 <div class="circular-progress-overlay" id="loadingOverlay">
   <div class="circular-progress">
-    <svg viewBox="0 0 60 60" width="70" height="70">
+    <svg viewBox="0 0 60 60" width="74" height="74">
       <circle class="circle-bg" cx="30" cy="30" r="26"/>
       <circle class="circle-fill" id="progressCircle" cx="30" cy="30" r="26"/>
     </svg>
-    <div class="circle-icon" id="loadingIcon">⏳</div>
+    <div class="circle-icon" id="loadingIcon"></div>
   </div>
   <div class="progress-text" id="loadingText">Memproses...</div>
 </div>
@@ -754,43 +596,14 @@ body{
 <!-- TOAST -->
 <div class="toast" id="toast"></div>
 
-<!-- ===================== LOGIN PAGE ===================== -->
-<div class="page active" id="page-login" style="padding-bottom:0">
-  <div class="login-logo">🏫</div>
-  <div class="login-title">Kas Kelas X RPL</div>
-  <div class="login-sub">Sistem Manajemen Keuangan Kelas<br>Transparan & Mudah Digunakan</div>
-  <div class="login-card">
-    <div class="login-info">
-      💡 Default admin: <strong>admin</strong> / <strong>admin123</strong>
-    </div>
-    <div class="form-group">
-      <label class="form-label">Username</label>
-      <input type="text" class="form-input" id="login-username" placeholder="Masukkan username" autocomplete="username"/>
-    </div>
-    <div class="form-group">
-      <label class="form-label">Password</label>
-      <div class="password-toggle">
-        <input type="password" class="form-input" id="login-password" placeholder="Masukkan password" autocomplete="current-password" onkeypress="if(event.key==='Enter')doLogin()"/>
-        <span class="toggle-eye" onclick="toggleEye('login-password',this)"><i class="fas fa-eye"></i></span>
-      </div>
-    </div>
-    <button class="btn btn-primary" onclick="doLogin()" id="btn-login">
-      <i class="fas fa-sign-in-alt"></i> Masuk Sebagai Bendahara/Admin
-    </button>
-    <button class="btn btn-outline" onclick="masukSebagaiPublik()" style="margin-top:12px">
-      <i class="fas fa-eye"></i> Lihat Sebagai Publik
-    </button>
-  </div>
-</div>
-
 <!-- ===================== HOME PAGE ===================== -->
-<div class="page" id="page-home">
+<div class="page active" id="page-home">
   <div class="header">
     <div>
-      <div class="header-greeting" id="home-greeting">Selamat Datang,</div>
+      <div class="header-greeting" id="home-greeting"></div>
       <div class="header-name" id="home-name">Tracking Kas X RPL</div>
     </div>
-    <div class="theme-btn" id="themeBtn" onclick="toggleTheme()">🌙</div>
+    <div class="theme-btn" id="themeBtn" onclick="toggleTheme()"></div>
   </div>
 
   <div class="saldo-card">
@@ -806,7 +619,7 @@ body{
         <div class="saldo-out" id="home-pengeluaran">- Rp 0</div>
       </div>
     </div>
-    <div class="saldo-sync" id="home-sync">⏳ Memuat data...</div>
+    <div class="saldo-sync" id="home-sync"> Memuat data...</div>
   </div>
 
   <div class="mini-cards">
@@ -818,7 +631,7 @@ body{
       <label>Keluar 7 Hari</label>
       <div class="amount" id="home-week">Rp 0</div>
     </div>
-    <div class="mini-card dark ripple-container" onclick="showPage('page-transaksi-all');createRipple(event,this)">
+    <div class="mini-card dark" onclick="showPage('page-transaksi-all')">
       <div class="mini-card-action">
         <i class="fas fa-list"></i>
         <div class="mini-card-action-text">
@@ -827,7 +640,7 @@ body{
         </div>
       </div>
     </div>
-    <div class="mini-card dark ripple-container" onclick="openAnggaranModal();createRipple(event,this)">
+    <div class="mini-card dark" onclick="openAnggaranModal()">
       <div class="mini-card-action">
         <i class="fas fa-chart-bar"></i>
         <div class="mini-card-action-text">
@@ -841,9 +654,13 @@ body{
   <div class="section">
     <div class="section-header">
       <div class="section-title">Transaksi Terbaru</div>
-      <div class="section-link" onclick="showPage('page-transaksi-all')">Lihat Semua →</div>
+      <div class="section-link" onclick="showPage('page-transaksi-all')">Lihat Semua </div>
     </div>
-    <div id="home-transaksi-list"><div class="skeleton skeleton-item"></div><div class="skeleton skeleton-item"></div><div class="skeleton skeleton-item"></div></div>
+    <div id="home-transaksi-list">
+      <div class="skeleton skeleton-item"></div>
+      <div class="skeleton skeleton-item"></div>
+      <div class="skeleton skeleton-item"></div>
+    </div>
   </div>
 </div>
 
@@ -851,28 +668,36 @@ body{
 <div class="page" id="page-stats">
   <div class="header">
     <div class="header-title">Analisa Grafik</div>
-    <div class="theme-btn" onclick="toggleTheme()">🌙</div>
+    <div class="theme-btn" onclick="toggleTheme()"></div>
   </div>
 
   <div class="month-selector">
-    <div class="month-nav" onclick="changeMonth(-1)">‹</div>
-    <div class="month-text" id="stats-month-text">April 2025</div>
-    <div class="month-nav" onclick="changeMonth(1)">›</div>
+    <div class="month-nav" onclick="changeMonth(-1)">�</div>
+    <div class="month-text" id="stats-month-text">Januari 2025</div>
+    <div class="month-nav" onclick="changeMonth(1)">�</div>
   </div>
 
   <div class="stats-summary">
-    <div class="stats-box"><div class="stats-box-label">Pemasukan</div><div class="stats-box-val green" id="stats-in">Rp 0</div></div>
-    <div class="stats-box"><div class="stats-box-label">Pengeluaran</div><div class="stats-box-val red" id="stats-out">Rp 0</div></div>
+    <div class="stats-box">
+      <div class="stats-box-label">Pemasukan</div>
+      <div class="stats-box-val green" id="stats-in">Rp 0</div>
+    </div>
+    <div class="stats-box">
+      <div class="stats-box-label">Pengeluaran</div>
+      <div class="stats-box-val red" id="stats-out">Rp 0</div>
+    </div>
   </div>
 
   <div class="section">
     <div class="chart-container">
-      <div class="chart-title">📈 Pemasukan & Pengeluaran Harian</div>
+      <div class="chart-title"> Pemasukan & Pengeluaran Harian</div>
       <div class="chart-wrapper"><canvas id="chartHarian"></canvas></div>
     </div>
     <div class="chart-container">
-      <div class="chart-title">🏷️ Pengeluaran per Kategori</div>
-      <div id="kategori-bars"><div class="empty-state"><i class="fas fa-chart-pie"></i><p>Belum ada data</p></div></div>
+      <div class="chart-title"> Pengeluaran per Kategori</div>
+      <div id="kategori-bars">
+        <div class="empty-state"><i class="fas fa-chart-pie"></i><p>Belum ada data</p></div>
+      </div>
     </div>
   </div>
 
@@ -881,7 +706,9 @@ body{
       <div class="section-title">5 Pengeluaran Terbesar</div>
       <div class="section-badge">BULAN INI</div>
     </div>
-    <div id="stats-top5"><div class="empty-state"><i class="fas fa-receipt"></i><p>Belum ada data pengeluaran.</p></div></div>
+    <div id="stats-top5">
+      <div class="empty-state"><i class="fas fa-receipt"></i><p>Belum ada data pengeluaran.</p></div>
+    </div>
   </div>
 
   <div class="section">
@@ -889,7 +716,9 @@ body{
       <div class="section-title">Monitor Anggaran</div>
       <div class="section-badge">LIVE</div>
     </div>
-    <div id="stats-anggaran"><div class="empty-state"><i class="fas fa-chart-bar"></i><p>Belum ada anggaran.</p></div></div>
+    <div id="stats-anggaran">
+      <div class="empty-state"><i class="fas fa-chart-bar"></i><p>Belum ada anggaran.</p></div>
+    </div>
   </div>
 </div>
 
@@ -897,13 +726,15 @@ body{
 <div class="page" id="page-wallet">
   <div class="header">
     <div class="header-title">Daftar Siswa</div>
-    <div class="theme-btn" onclick="toggleTheme()">🌙</div>
+    <div class="theme-btn" onclick="toggleTheme()"></div>
   </div>
 
   <div class="wallet-total-card">
     <div class="wallet-total-label">Total Saldo Kas</div>
     <div class="wallet-total-amount" id="wallet-saldo">Rp 0</div>
-    <div class="wallet-progress"><div class="wallet-progress-bar" id="wallet-progress-bar" style="width:0%"></div></div>
+    <div class="wallet-progress">
+      <div class="wallet-progress-bar" id="wallet-progress-bar" style="width:0%"></div>
+    </div>
     <div class="wallet-meta">
       <span class="sisa" id="wallet-lunas-count">Lunas: 0 siswa</span>
       <span class="live" id="wallet-total-count">Total: 0 siswa</span>
@@ -915,20 +746,24 @@ body{
     <input type="text" class="search-input" id="siswa-search" placeholder="Cari nama siswa..." oninput="filterSiswa()"/>
   </div>
 
-  <div class="week-tabs" id="week-tabs">
+  <div class="week-tabs">
     <div class="week-tab active" onclick="setWeekTab(1,this)">Minggu 1</div>
     <div class="week-tab" onclick="setWeekTab(2,this)">Minggu 2</div>
     <div class="week-tab" onclick="setWeekTab(3,this)">Minggu 3</div>
     <div class="week-tab" onclick="setWeekTab(4,this)">Minggu 4</div>
   </div>
 
-  <div style="padding:0 16px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center">
+  <div style="padding:0 16px;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center">
     <div style="font-size:12px;color:var(--text-secondary)" id="siswa-week-label">Minggu ke-1</div>
     <div id="admin-tambah-siswa"></div>
   </div>
 
   <div class="section" style="margin-top:0">
-    <div id="wallet-siswa-list"><div class="skeleton skeleton-item"></div><div class="skeleton skeleton-item"></div></div>
+    <div id="wallet-siswa-list">
+      <div class="skeleton skeleton-item"></div>
+      <div class="skeleton skeleton-item"></div>
+      <div class="skeleton skeleton-item"></div>
+    </div>
   </div>
 </div>
 
@@ -936,11 +771,11 @@ body{
 <div class="page" id="page-me">
   <div class="header">
     <div class="header-title">Profil & Pengaturan</div>
-    <div class="theme-btn" onclick="toggleTheme()">🌙</div>
+    <div class="theme-btn" onclick="toggleTheme()"></div>
   </div>
 
   <div class="profile-card">
-    <div class="profile-avatar">🏫</div>
+    <div class="profile-avatar"></div>
     <div class="profile-name" id="me-kelas">Kelas X RPL</div>
     <div class="profile-role" id="me-role">Pengunjung</div>
     <div class="profile-class" id="me-tahun">Tahun Ajaran 2024/2025</div>
@@ -953,7 +788,10 @@ body{
 <div class="page" id="page-transaksi-all">
   <div class="header">
     <div style="display:flex;align-items:center;gap:12px">
-      <span style="cursor:pointer;font-size:20px;padding:4px 8px;border-radius:8px;transition:background 0.2s" onclick="goBack()" onmouseover="this.style.background='var(--bg-card)'" onmouseout="this.style.background='transparent'">←</span>
+      <span style="cursor:pointer;font-size:22px;padding:4px 8px;border-radius:8px;transition:background 0.2s"
+        onclick="goBack()"
+        onmouseover="this.style.background='var(--bg-card)'"
+        onmouseout="this.style.background='transparent'"></span>
       <div class="header-title">Riwayat Transaksi</div>
     </div>
   </div>
@@ -963,19 +801,22 @@ body{
     <div class="filter-tab" onclick="filterTransaksi('pengeluaran',this)">Pengeluaran</div>
   </div>
   <div class="section" style="margin-top:0">
-    <div id="all-transaksi-list"><div class="skeleton skeleton-item"></div><div class="skeleton skeleton-item"></div></div>
+    <div id="all-transaksi-list">
+      <div class="skeleton skeleton-item"></div>
+      <div class="skeleton skeleton-item"></div>
+    </div>
   </div>
 </div>
 
 <!-- ===================== BOTTOM NAV ===================== -->
-<div class="bottom-nav" id="bottom-nav" style="display:none">
+<div class="bottom-nav" id="bottom-nav">
   <div class="nav-item active" id="nav-home" onclick="showPage('page-home')">
     <i class="fas fa-home"></i><span>Home</span>
   </div>
   <div class="nav-item" id="nav-stats" onclick="showPage('page-stats')">
     <i class="fas fa-chart-bar"></i><span>Stats</span>
   </div>
-  <div class="nav-add ripple-container" id="nav-add-btn" onclick="openTransaksiModal();createRipple(event,this)" style="display:none">
+  <div class="nav-add" id="nav-add-btn" onclick="openTransaksiModal()" style="display:none">
     <i class="fas fa-plus"></i>
   </div>
   <div class="nav-item" id="nav-wallet" onclick="showPage('page-wallet')">
@@ -996,8 +837,8 @@ body{
       <input type="date" class="form-input" id="trx-tanggal"/>
     </div>
     <div class="type-buttons">
-      <div class="type-btn active-in" id="btn-pemasukan" onclick="setJenis('pemasukan')">📥 Pemasukan</div>
-      <div class="type-btn" id="btn-pengeluaran" onclick="setJenis('pengeluaran')">📤 Pengeluaran</div>
+      <div class="type-btn active-in" id="btn-pemasukan" onclick="setJenis('pemasukan')"> Pemasukan</div>
+      <div class="type-btn" id="btn-pengeluaran" onclick="setJenis('pengeluaran')"> Pengeluaran</div>
     </div>
     <div class="form-group">
       <label class="form-label">Keterangan</label>
@@ -1031,7 +872,9 @@ body{
         <option value="OVO">OVO</option>
       </select>
     </div>
-    <button class="btn btn-primary" onclick="simpanTransaksi()" id="btn-simpan-trx">💾 Simpan Transaksi</button>
+    <button class="btn btn-primary" onclick="simpanTransaksi()" id="btn-simpan-trx">
+      <i class="fas fa-save"></i> Simpan Transaksi
+    </button>
     <button class="btn btn-outline" onclick="closeModal('modal-transaksi')">Tutup</button>
   </div>
 </div>
@@ -1050,15 +893,22 @@ body{
         <label class="form-label">Nama Siswa</label>
         <input type="text" class="form-input" id="siswa-nama-single" placeholder="Masukkan nama siswa"/>
       </div>
-      <button class="btn btn-primary" onclick="simpanSiswaSingle()" id="btn-simpan-siswa-single">➕ Tambah Siswa</button>
+      <button class="btn btn-primary" onclick="simpanSiswaSingle()" id="btn-simpan-siswa-single">
+        <i class="fas fa-user-plus"></i> Tambah Siswa
+      </button>
     </div>
     <div id="siswa-bulk-form" style="display:none">
       <div class="form-group">
         <label class="form-label">Masukkan Nama (satu per baris)</label>
         <textarea class="form-textarea" id="siswa-nama-bulk" placeholder="Ahmad&#10;Hafid&#10;Ridho&#10;Ahkam&#10;(Satu nama per baris)"></textarea>
       </div>
-      <div style="font-size:11px;color:var(--text-secondary);margin-bottom:12px">💡 Nama yang sudah ada akan dilewati otomatis</div>
-      <button class="btn btn-primary" onclick="simpanSiswaBulk()" id="btn-simpan-siswa-bulk">➕ Tambah Semua Siswa</button>
+      <div style="background:rgba(108,99,255,0.08);border:1px solid rgba(108,99,255,0.2);border-radius:10px;padding:11px 14px;margin-bottom:12px;font-size:12px;color:var(--text-secondary);display:flex;gap:8px">
+        <i class="fas fa-info-circle" style="color:var(--accent-purple);margin-top:1px;flex-shrink:0"></i>
+        <span>Nama yang sudah ada akan dilewati otomatis (duplikat diabaikan)</span>
+      </div>
+      <button class="btn btn-primary" onclick="simpanSiswaBulk()" id="btn-simpan-siswa-bulk">
+        <i class="fas fa-users"></i> Tambah Semua Siswa
+      </button>
     </div>
     <button class="btn btn-outline" onclick="closeModal('modal-siswa')">Batal</button>
   </div>
@@ -1068,20 +918,23 @@ body{
 <div class="modal-overlay" id="modal-bayar">
   <div class="modal">
     <div class="modal-handle"></div>
-    <div class="modal-title">💰 Catat Pembayaran</div>
-    <div style="background:var(--bg-card);border-radius:12px;padding:14px;margin-bottom:16px;border:1px solid var(--border)">
-      <div style="font-size:11px;color:var(--text-secondary)">Siswa</div>
-      <div style="font-size:16px;font-weight:700;margin-top:2px" id="bayar-nama-display"></div>
-      <div style="font-size:11px;color:var(--accent-purple);margin-top:4px" id="bayar-minggu-display"></div>
+    <div class="modal-title"> Catat Pembayaran</div>
+    <div style="background:var(--bg-card);border-radius:14px;padding:16px;margin-bottom:16px;border:1px solid var(--border)">
+      <div style="font-size:11px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:0.5px">Siswa</div>
+      <div style="font-size:17px;font-weight:700;margin-top:4px" id="bayar-nama-display"></div>
+      <div style="font-size:12px;color:var(--accent-purple);margin-top:4px" id="bayar-minggu-display"></div>
     </div>
     <div class="form-group">
       <label class="form-label">Nominal Pembayaran (Rp)</label>
       <input type="number" class="form-input" id="bayar-nominal" placeholder="Masukkan nominal"/>
     </div>
-    <div style="background:rgba(108,99,255,0.1);border-radius:10px;padding:12px;margin-bottom:16px;font-size:12px;color:var(--text-secondary);border:1px solid rgba(108,99,255,0.2)">
+    <div style="background:rgba(108,99,255,0.08);border:1px solid rgba(108,99,255,0.2);border-radius:10px;padding:12px;margin-bottom:16px;font-size:12px;color:var(--text-secondary);display:flex;gap:8px">
+      <i class="fas fa-info-circle" style="color:var(--accent-purple);flex-shrink:0;margin-top:1px"></i>
       <span id="bayar-info-minimal">Minimal lunas: Rp 3.000</span>
     </div>
-    <button class="btn btn-success" onclick="prosesBayar()" id="btn-proses-bayar">✅ Konfirmasi Bayar</button>
+    <button class="btn btn-success" onclick="prosesBayar()" id="btn-proses-bayar">
+      <i class="fas fa-check-circle"></i> Konfirmasi Bayar
+    </button>
     <button class="btn btn-outline" onclick="closeModal('modal-bayar')">Batal</button>
   </div>
 </div>
@@ -1090,12 +943,12 @@ body{
 <div class="modal-overlay" id="modal-anggaran">
   <div class="modal">
     <div class="modal-handle"></div>
-    <div class="modal-title">📊 Kelola Anggaran</div>
+    <div class="modal-title"> Kelola Anggaran</div>
     <div id="anggaran-list-modal" style="margin-bottom:16px"></div>
     <div class="divider"></div>
-    <div style="font-size:12px;font-weight:700;margin-bottom:12px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:1px">Tambah Anggaran Baru</div>
+    <div style="font-size:11px;font-weight:700;color:var(--text-secondary);text-transform:uppercase;letter-spacing:1px;margin-bottom:12px">Tambah Anggaran Baru</div>
     <div class="form-group">
-      <input type="text" class="form-input" id="ang-nama" placeholder="Nama anggaran"/>
+      <input type="text" class="form-input" id="ang-nama" placeholder="Nama anggaran (contoh: Dana Snack)"/>
     </div>
     <div class="form-group">
       <select class="form-select" id="ang-kategori">
@@ -1112,7 +965,9 @@ body{
     <div class="form-group">
       <input type="number" class="form-input" id="ang-limit" placeholder="Limit (Rp)"/>
     </div>
-    <button class="btn btn-primary" onclick="simpanAnggaran()" id="btn-simpan-anggaran">➕ Tambah Anggaran</button>
+    <button class="btn btn-primary" onclick="simpanAnggaran()" id="btn-simpan-anggaran">
+      <i class="fas fa-plus"></i> Tambah Anggaran
+    </button>
     <button class="btn btn-outline" onclick="closeModal('modal-anggaran')">Tutup</button>
   </div>
 </div>
@@ -1121,7 +976,7 @@ body{
 <div class="modal-overlay" id="modal-pengaturan">
   <div class="modal">
     <div class="modal-handle"></div>
-    <div class="modal-title">⚙️ Pengaturan Kelas</div>
+    <div class="modal-title"> Pengaturan Kelas</div>
     <div class="form-group">
       <label class="form-label">Nama Kelas</label>
       <input type="text" class="form-input" id="set-kelas" placeholder="contoh: Kelas X RPL 1"/>
@@ -1134,7 +989,9 @@ body{
       <label class="form-label">Tahun Ajaran</label>
       <input type="text" class="form-input" id="set-tahun" placeholder="contoh: 2024/2025"/>
     </div>
-    <button class="btn btn-primary" onclick="simpanPengaturan()" id="btn-simpan-pengaturan">💾 Simpan Pengaturan</button>
+    <button class="btn btn-primary" onclick="simpanPengaturan()" id="btn-simpan-pengaturan">
+      <i class="fas fa-save"></i> Simpan Pengaturan
+    </button>
     <button class="btn btn-outline" onclick="closeModal('modal-pengaturan')">Batal</button>
   </div>
 </div>
@@ -1143,10 +1000,10 @@ body{
 <div class="modal-overlay" id="modal-users">
   <div class="modal">
     <div class="modal-handle"></div>
-    <div class="modal-title">👥 Kelola Akun</div>
+    <div class="modal-title"> Kelola Akun</div>
     <div id="users-list" style="margin-bottom:16px"></div>
     <div class="divider"></div>
-    <div style="font-size:12px;font-weight:700;margin-bottom:12px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:1px">Tambah Akun Bendahara</div>
+    <div style="font-size:11px;font-weight:700;color:var(--text-secondary);text-transform:uppercase;letter-spacing:1px;margin-bottom:12px">Tambah Akun Bendahara</div>
     <div class="form-group">
       <label class="form-label">Nama Lengkap</label>
       <input type="text" class="form-input" id="user-nama" placeholder="Nama bendahara"/>
@@ -1157,20 +1014,91 @@ body{
     </div>
     <div class="form-group">
       <label class="form-label">Password</label>
-      <div class="password-toggle">
-        <input type="password" class="form-input" id="user-password" placeholder="Password"/>
+      <div style="position:relative">
+        <input type="password" class="form-input" id="user-password" placeholder="Password" style="padding-right:46px"/>
         <span class="toggle-eye" onclick="toggleEye('user-password',this)"><i class="fas fa-eye"></i></span>
       </div>
     </div>
-    <div class="form-group" id="user-role-group">
+    <div class="form-group">
       <label class="form-label">Role</label>
       <select class="form-select" id="user-role">
         <option value="bendahara">Bendahara</option>
         <option value="admin">Admin</option>
       </select>
     </div>
-    <button class="btn btn-primary" onclick="simpanUser()" id="btn-simpan-user">➕ Tambah Akun</button>
+    <button class="btn btn-primary" onclick="simpanUser()" id="btn-simpan-user">
+      <i class="fas fa-user-plus"></i> Tambah Akun
+    </button>
     <button class="btn btn-outline" onclick="closeModal('modal-users')">Tutup</button>
+  </div>
+</div>
+
+<!-- ===================== MODAL: EDIT PROFIL ===================== -->
+<div class="modal-overlay" id="modal-edit-profil">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-title"> Edit Profil Saya</div>
+
+    <!-- INFO CARD -->
+    <div style="background:var(--bg-card);border-radius:14px;padding:16px;margin-bottom:20px;border:1px solid var(--border);display:flex;align-items:center;gap:14px">
+      <div id="edit-profil-avatar" style="width:48px;height:48px;border-radius:14px;background:linear-gradient(135deg,var(--accent-purple),#8b5cf6);display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;color:white;flex-shrink:0">AD</div>
+      <div>
+        <div style="font-size:15px;font-weight:700" id="edit-profil-nama-display">-</div>
+        <div style="font-size:12px;color:var(--accent-purple);margin-top:3px" id="edit-profil-role-display">-</div>
+      </div>
+    </div>
+
+    <!-- NAMA & USERNAME -->
+    <div style="font-size:11px;font-weight:700;color:var(--text-secondary);text-transform:uppercase;letter-spacing:1px;margin-bottom:12px;display:flex;align-items:center;gap:8px">
+      <i class="fas fa-user" style="color:var(--accent-purple)"></i> Nama &amp; Username
+    </div>
+    <div class="form-group">
+      <label class="form-label">Nama Lengkap</label>
+      <input type="text" class="form-input" id="edit-nama" placeholder="Masukkan nama baru"/>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Username</label>
+      <input type="text" class="form-input" id="edit-username" placeholder="Masukkan username baru" autocomplete="off"/>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- PASSWORD -->
+    <div style="font-size:11px;font-weight:700;color:var(--text-secondary);text-transform:uppercase;letter-spacing:1px;margin-bottom:12px;display:flex;align-items:center;gap:8px">
+      <i class="fas fa-lock" style="color:var(--accent-purple)"></i> Ganti Password
+    </div>
+    <div class="form-group">
+      <label class="form-label">Password Lama</label>
+      <div style="position:relative">
+        <input type="password" class="form-input" id="edit-pass-lama" placeholder="Masukkan password lama" style="padding-right:46px" autocomplete="current-password"/>
+        <span class="toggle-eye" onclick="toggleEye('edit-pass-lama',this)"><i class="fas fa-eye"></i></span>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Password Baru</label>
+      <div style="position:relative">
+        <input type="password" class="form-input" id="edit-pass-baru" placeholder="Minimal 6 karakter" style="padding-right:46px" autocomplete="new-password"/>
+        <span class="toggle-eye" onclick="toggleEye('edit-pass-baru',this)"><i class="fas fa-eye"></i></span>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Konfirmasi Password Baru</label>
+      <div style="position:relative">
+        <input type="password" class="form-input" id="edit-pass-konfirm" placeholder="Ulangi password baru" style="padding-right:46px" autocomplete="new-password"/>
+        <span class="toggle-eye" onclick="toggleEye('edit-pass-konfirm',this)"><i class="fas fa-eye"></i></span>
+      </div>
+    </div>
+
+    <!-- HINT -->
+    <div style="background:rgba(108,99,255,0.08);border:1px solid rgba(108,99,255,0.2);border-radius:10px;padding:12px;margin-bottom:16px;font-size:12px;color:var(--text-secondary);display:flex;gap:8px;align-items:flex-start">
+      <i class="fas fa-info-circle" style="color:var(--accent-purple);margin-top:1px;flex-shrink:0"></i>
+      <span>Kosongkan field password jika tidak ingin menggantinya.</span>
+    </div>
+
+    <button class="btn btn-primary" onclick="simpanEditProfil()" id="btn-simpan-profil">
+      <i class="fas fa-save"></i> Simpan Perubahan
+    </button>
+    <button class="btn btn-outline" onclick="closeModal('modal-edit-profil')">Batal</button>
   </div>
 </div>
 
@@ -1189,105 +1117,22 @@ body{
 <div class="modal-overlay" id="modal-about">
   <div class="modal" style="text-align:center">
     <div class="modal-handle"></div>
-    <div style="font-size:52px;margin-bottom:14px">🏫</div>
+    <div style="font-size:52px;margin-bottom:14px"></div>
     <div class="modal-title">Kas Kelas X RPL</div>
-    <p style="font-size:13px;color:var(--text-secondary);margin-bottom:16px;line-height:1.7">
+    <p style="font-size:13px;color:var(--text-secondary);margin-bottom:20px;line-height:1.7">
       Aplikasi manajemen kas kelas yang transparan<br>dan mudah digunakan.<br><br>
       <strong style="color:var(--accent-purple)">Version 2.0.0</strong><br>
-      Built with ❤️ for Kelas X RPL
+      Built with  for Kelas X RPL
     </p>
     <button class="btn btn-primary" onclick="closeModal('modal-about')">Tutup</button>
-  </div>
-</div>
-<!-- ===================== MODAL: EDIT PROFIL ===================== -->
-<div class="modal-overlay" id="modal-edit-profil">
-  <div class="modal">
-    <div class="modal-handle"></div>
-    <div class="modal-title">✏️ Edit Profil Saya</div>
-
-    <!-- INFO CARD -->
-    <div style="background:var(--bg-card);border-radius:14px;padding:16px;margin-bottom:20px;border:1px solid var(--border);display:flex;align-items:center;gap:12px">
-      <div style="width:46px;height:46px;border-radius:14px;background:linear-gradient(135deg,var(--accent-purple),#8b5cf6);display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;color:white;flex-shrink:0" id="edit-profil-avatar">AD</div>
-      <div>
-        <div style="font-size:15px;font-weight:700" id="edit-profil-nama-display">-</div>
-        <div style="font-size:12px;color:var(--accent-purple);margin-top:2px" id="edit-profil-role-display">-</div>
-      </div>
-    </div>
-
-    <!-- SECTION: NAMA & USERNAME -->
-    <div style="font-size:11px;font-weight:700;color:var(--text-secondary);text-transform:uppercase;letter-spacing:1px;margin-bottom:12px;display:flex;align-items:center;gap:8px">
-      <i class="fas fa-user" style="color:var(--accent-purple)"></i> Nama & Username
-    </div>
-
-    <div class="form-group">
-      <label class="form-label">Nama Lengkap</label>
-      <input type="text" class="form-input" id="edit-nama" placeholder="Masukkan nama baru"/>
-    </div>
-
-    <div class="form-group">
-      <label class="form-label">Username</label>
-      <input type="text" class="form-input" id="edit-username" placeholder="Masukkan username baru" autocomplete="off"/>
-    </div>
-
-    <!-- DIVIDER -->
-    <div style="height:1px;background:var(--border);margin:18px 0"></div>
-
-    <!-- SECTION: PASSWORD -->
-    <div style="font-size:11px;font-weight:700;color:var(--text-secondary);text-transform:uppercase;letter-spacing:1px;margin-bottom:12px;display:flex;align-items:center;gap:8px">
-      <i class="fas fa-lock" style="color:var(--accent-purple)"></i> Ganti Password
-    </div>
-
-    <div class="form-group">
-      <label class="form-label">Password Lama</label>
-      <div style="position:relative">
-        <input type="password" class="form-input" id="edit-pass-lama" placeholder="Masukkan password lama" style="padding-right:46px" autocomplete="current-password"/>
-        <span class="toggle-eye" onclick="toggleEye('edit-pass-lama',this)">
-          <i class="fas fa-eye"></i>
-        </span>
-      </div>
-    </div>
-
-    <div class="form-group">
-      <label class="form-label">Password Baru</label>
-      <div style="position:relative">
-        <input type="password" class="form-input" id="edit-pass-baru" placeholder="Minimal 6 karakter" style="padding-right:46px" autocomplete="new-password"/>
-        <span class="toggle-eye" onclick="toggleEye('edit-pass-baru',this)">
-          <i class="fas fa-eye"></i>
-        </span>
-      </div>
-    </div>
-
-    <div class="form-group">
-      <label class="form-label">Konfirmasi Password Baru</label>
-      <div style="position:relative">
-        <input type="password" class="form-input" id="edit-pass-konfirm" placeholder="Ulangi password baru" style="padding-right:46px" autocomplete="new-password"/>
-        <span class="toggle-eye" onclick="toggleEye('edit-pass-konfirm',this)">
-          <i class="fas fa-eye"></i>
-        </span>
-      </div>
-    </div>
-
-    <!-- HINT -->
-    <div style="background:rgba(108,99,255,0.08);border:1px solid rgba(108,99,255,0.2);border-radius:10px;padding:11px 14px;margin-bottom:16px;font-size:12px;color:var(--text-secondary);display:flex;align-items:flex-start;gap:8px">
-      <i class="fas fa-info-circle" style="color:var(--accent-purple);margin-top:1px;flex-shrink:0"></i>
-      <span>Kosongkan field password jika tidak ingin menggantinya. Isi password lama hanya jika ingin mengganti password.</span>
-    </div>
-
-    <!-- BUTTONS -->
-    <button class="btn btn-primary" onclick="simpanEditProfil()" id="btn-simpan-profil">
-      <i class="fas fa-save"></i> &nbsp;Simpan Perubahan
-    </button>
-    <button class="btn btn-outline" onclick="closeModal('modal-edit-profil')" style="margin-top:8px">
-      Batal
-    </button>
   </div>
 </div>
 
 <script>
 // ==================== STATE ====================
-let currentUser = null; // null = publik
+let currentUser = null;
 let isLight = false;
-let currentPage = 'page-login';
+let currentPage = 'page-home';
 let prevPage = 'page-home';
 let currentJenis = 'pemasukan';
 let currentSiswaId = null;
@@ -1312,7 +1157,7 @@ function showToast(msg, type='success'){
   const t = document.getElementById('toast');
   t.textContent = msg;
   t.className = `toast ${type} show`;
-  setTimeout(()=>t.className='toast', 3500);
+  setTimeout(()=>{ t.className='toast'; }, 3500);
 }
 
 async function apiCall(method, url, body=null){
@@ -1322,22 +1167,20 @@ async function apiCall(method, url, body=null){
     const res = await fetch(url, opts);
     return await res.json();
   }catch(e){
-    console.error('API Error:', e);
+    console.error('API Error:',e);
     return {success:false, message:'Koneksi gagal'};
   }
 }
 
 // ==================== CIRCULAR PROGRESS ====================
 function showProgress(text='Memproses...'){
-  const overlay = document.getElementById('loadingOverlay');
   document.getElementById('loadingText').textContent = text;
-  overlay.classList.add('active');
-  let val = 0;
+  document.getElementById('loadingOverlay').classList.add('active');
   const circle = document.getElementById('progressCircle');
-  const circumference = 188;
+  let val = 0;
   activeProgress = setInterval(()=>{
-    val = Math.min(val + 3, 90);
-    circle.style.strokeDashoffset = circumference - (val/100)*circumference;
+    val = Math.min(val+3, 90);
+    circle.style.strokeDashoffset = 188 - (val/100)*188;
   }, 50);
 }
 
@@ -1347,12 +1190,12 @@ function finishProgress(success=true){
   const icon = document.getElementById('loadingIcon');
   circle.style.strokeDashoffset = 0;
   circle.style.stroke = success ? 'var(--accent-green)' : 'var(--accent-red)';
-  icon.textContent = success ? '✅' : '❌';
+  icon.textContent = success ? '' : '';
   setTimeout(()=>{
     document.getElementById('loadingOverlay').classList.remove('active');
     circle.style.strokeDashoffset = 188;
     circle.style.stroke = 'var(--accent-purple)';
-    icon.textContent = '⏳';
+    icon.textContent = '';
   }, 700);
 }
 
@@ -1373,16 +1216,15 @@ function createRipple(e, el){
 function toggleTheme(){
   isLight = !isLight;
   document.body.classList.toggle('light-mode', isLight);
-  const btn = document.querySelectorAll('.theme-btn');
-  btn.forEach(b=>{
-    b.textContent = isLight ? '☀️' : '🌙';
+  document.querySelectorAll('.theme-btn').forEach(b=>{
+    b.textContent = isLight ? '' : '';
     b.classList.add('switching');
     setTimeout(()=>b.classList.remove('switching'), 500);
   });
   localStorage.setItem('theme', isLight ? 'light' : 'dark');
 }
 
-// ==================== PASSWORD TOGGLE ====================
+// ==================== TOGGLE EYE ====================
 function toggleEye(inputId, btn){
   const input = document.getElementById(inputId);
   const isPass = input.type === 'password';
@@ -1394,71 +1236,14 @@ function toggleEye(inputId, btn){
 function openModal(id){ document.getElementById(id).classList.add('active'); }
 function closeModal(id){ document.getElementById(id).classList.remove('active'); }
 document.querySelectorAll('.modal-overlay').forEach(o=>{
-  o.addEventListener('click',function(e){ if(e.target===this) this.classList.remove('active'); });
+  o.addEventListener('click', function(e){ if(e.target===this) this.classList.remove('active'); });
 });
-
-// ==================== LOGIN ====================
-async function doLogin(){
-  const username = document.getElementById('login-username').value.trim();
-  const password = document.getElementById('login-password').value;
-  if(!username||!password){ showToast('Username & password wajib diisi!','error'); return; }
-
-  const btn = document.getElementById('btn-login');
-  btn.disabled = true;
-  btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Memproses...';
-  showProgress('Memeriksa akun...');
-
-  const res = await apiCall('POST','/api/auth/login',{username,password});
-  finishProgress(res.success);
-
-  setTimeout(()=>{
-    btn.disabled = false;
-    btn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Masuk Sebagai Bendahara/Admin';
-    if(res.success){
-      currentUser = res.data;
-      localStorage.setItem('kas_user', JSON.stringify(currentUser));
-      showToast(`Selamat datang, ${currentUser.nama}! 🎉`);
-      initApp();
-    } else {
-      showToast(res.message||'Login gagal', 'error');
-    }
-  }, 800);
-}
-
-function masukSebagaiPublik(){
-  currentUser = null;
-  localStorage.removeItem('kas_user');
-  localStorage.setItem('kas_mode','publik');
-  window.location.href = '/login.html';
-}
-
-function logout(){
-  currentUser = null;
-  localStorage.removeItem('kas_user');
-  localStorage.removeItem('kas_mode');
-  window.location.href = '/login.html';
-}
-
-// ==================== INIT APP ====================
-function initApp(){
-  const nav = document.getElementById('bottom-nav');
-  nav.style.display = 'flex';
-
-  // Tampilkan/sembunyikan tombol +
-  const addBtn = document.getElementById('nav-add-btn');
-  if(currentUser){ addBtn.style.display = 'flex'; }
-  else { addBtn.style.display = 'none'; }
-
-  showPage('page-home');
-  loadPengaturan();
-}
 
 // ==================== NAVIGATION ====================
 function showPage(pageId){
   prevPage = currentPage;
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-  const newPage = document.getElementById(pageId);
-  newPage.classList.add('active');
+  document.getElementById(pageId).classList.add('active');
   currentPage = pageId;
 
   document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
@@ -1474,21 +1259,37 @@ function showPage(pageId){
 
 function goBack(){ showPage(prevPage||'page-home'); }
 
+// ==================== LOGOUT ====================
+function logout(){
+  currentUser = null;
+  localStorage.removeItem('kas_user');
+  localStorage.removeItem('kas_mode');
+  window.location.href = '/login.html';
+}
+
+// ==================== INIT APP ====================
+function initApp(){
+  // Tampilkan tombol + jika login
+  const addBtn = document.getElementById('nav-add-btn');
+  addBtn.style.display = currentUser ? 'flex' : 'none';
+  showPage('page-home');
+  loadPengaturan();
+}
+
 // ==================== HOME ====================
 async function loadHome(){
   const setRes = await apiCall('GET','/api/pengaturan');
   if(setRes.success){
-    const d = setRes.data;
-    iuranMinimal = d.iuranMinimal||3000;
-    document.getElementById('me-kelas').textContent = d.namaKelas||'Kelas X RPL';
-    document.getElementById('me-tahun').textContent = `Tahun Ajaran ${d.tahunAjaran||'2024/2025'}`;
+    iuranMinimal = setRes.data.iuranMinimal || 3000;
+    document.getElementById('me-kelas').textContent = setRes.data.namaKelas || 'Kelas X RPL';
+    document.getElementById('me-tahun').textContent = `Tahun Ajaran ${setRes.data.tahunAjaran||'2024/2025'}`;
   }
 
   if(currentUser){
     document.getElementById('home-greeting').textContent = 'Selamat Datang,';
     document.getElementById('home-name').textContent = currentUser.nama;
   } else {
-    document.getElementById('home-greeting').textContent = '📊';
+    document.getElementById('home-greeting').textContent = '';
     document.getElementById('home-name').textContent = 'Tracking Kas X RPL';
   }
 
@@ -1501,17 +1302,18 @@ async function loadHome(){
     document.getElementById('home-today').textContent = formatRp(d.keluarHariIni);
     document.getElementById('home-week').textContent = formatRp(d.keluar7Hari);
     const now = new Date();
-    document.getElementById('home-sync').textContent = `✅ Update: ${now.toLocaleDateString('id-ID',{day:'2-digit',month:'short'})}, ${now.toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit'})}`;
+    document.getElementById('home-sync').textContent =
+      ` Update: ${now.toLocaleDateString('id-ID',{day:'2-digit',month:'short'})}, ${now.toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit'})}`;
   }
 
   const trxRes = await apiCall('GET','/api/transaksi?limit=8');
   if(trxRes.success) renderTransaksiList('home-transaksi-list', trxRes.data);
 }
 
-// ==================== TRANSAKSI LIST RENDER ====================
+// ==================== RENDER TRANSAKSI ====================
 function renderTransaksiList(containerId, data){
   const c = document.getElementById(containerId);
-  if(!data||data.length===0){
+  if(!data || data.length===0){
     c.innerHTML = `<div class="empty-state"><i class="fas fa-inbox"></i><p>Belum ada transaksi</p></div>`;
     return;
   }
@@ -1524,9 +1326,12 @@ function renderTransaksiList(containerId, data){
   });
   let html = '';
   Object.entries(groups).forEach(([date,group],gi)=>{
-    const tc = group.total>=0?'plus':'minus';
+    const tc = group.total>=0 ? 'plus' : 'minus';
     const tt = group.total>=0 ? '+'+formatRp(group.total) : '-'+formatRp(Math.abs(group.total));
-    html += `<div class="transaksi-group-date"><div class="transaksi-date">${date}</div><div class="transaksi-date-total ${tc}">${tt}</div></div>`;
+    html += `<div class="transaksi-group-date">
+      <div class="transaksi-date">${date}</div>
+      <div class="transaksi-date-total ${tc}">${tt}</div>
+    </div>`;
     group.items.forEach((t,i)=>{
       const isIn = t.jenis==='pemasukan';
       html += `<div class="transaksi-item" style="animation-delay:${(gi*3+i)*0.04}s" onclick="showDetail('${t._id}')">
@@ -1552,6 +1357,7 @@ function openTransaksiModal(){
   document.getElementById('trx-keterangan').value = '';
   document.getElementById('trx-kategori').value = '';
   document.getElementById('trx-nominal').value = '';
+  document.getElementById('trx-sumber').value = 'Kas Tunai';
   setJenis('pemasukan');
   openModal('modal-transaksi');
 }
@@ -1583,9 +1389,9 @@ async function simpanTransaksi(){
     btn.disabled = false;
     if(res.success){
       closeModal('modal-transaksi');
-      showToast('Transaksi berhasil disimpan! ✅');
+      showToast('Transaksi berhasil disimpan! ');
       loadHome();
-    } else showToast(res.message||'Gagal','error');
+    } else showToast(res.message||'Gagal menyimpan','error');
   }, 800);
 }
 
@@ -1629,7 +1435,7 @@ async function showDetail(id){
 
   const adminActions = document.getElementById('detail-admin-actions');
   if(currentUser){
-    adminActions.innerHTML = `<button class="btn btn-danger" onclick="hapusTransaksiDetail()" style="margin-bottom:8px">🗑️ Hapus Transaksi</button>`;
+    adminActions.innerHTML = `<button class="btn btn-danger" onclick="hapusTransaksiDetail()" style="margin-bottom:8px"><i class="fas fa-trash"></i> Hapus Transaksi</button>`;
   } else {
     adminActions.innerHTML = '';
   }
@@ -1645,7 +1451,7 @@ async function hapusTransaksiDetail(){
   setTimeout(()=>{
     if(res.success){
       closeModal('modal-detail');
-      showToast('Transaksi dihapus 🗑️');
+      showToast('Transaksi dihapus ');
       if(currentPage==='page-home') loadHome();
       if(currentPage==='page-transaksi-all') loadAllTransaksi();
     } else showToast(res.message||'Gagal','error');
@@ -1657,7 +1463,6 @@ function changeMonth(dir){
   currentMonth += dir;
   if(currentMonth>12){currentMonth=1;currentYear++;}
   if(currentMonth<1){currentMonth=12;currentYear--;}
-  document.getElementById('stats-month-text').textContent = `${MONTHS[currentMonth-1]} ${currentYear}`;
   loadStats();
 }
 
@@ -1665,7 +1470,7 @@ async function loadStats(){
   document.getElementById('stats-month-text').textContent = `${MONTHS[currentMonth-1]} ${currentYear}`;
   const res = await apiCall('GET',`/api/stats?bulan=${currentMonth}&tahun=${currentYear}`);
   if(!res.success) return;
-  const {dailyData,pengeluaranTerbesar,perKategori} = res.data;
+  const {dailyData, pengeluaranTerbesar, perKategori} = res.data;
 
   const totalIn = dailyData.reduce((s,d)=>s+d.pemasukan,0);
   const totalOut = dailyData.reduce((s,d)=>s+d.pengeluaran,0);
@@ -1677,7 +1482,7 @@ async function loadStats(){
   chartHarian = new Chart(ctx,{
     type:'bar',
     data:{
-      labels:dailyData.map(d=>d.hari),
+      labels: dailyData.map(d=>d.hari),
       datasets:[
         {label:'Pemasukan',data:dailyData.map(d=>d.pemasukan),backgroundColor:'rgba(38,166,154,0.7)',borderRadius:4,borderSkipped:false},
         {label:'Pengeluaran',data:dailyData.map(d=>d.pengeluaran),backgroundColor:'rgba(239,83,80,0.7)',borderRadius:4,borderSkipped:false}
@@ -1712,20 +1517,20 @@ async function loadStats(){
     top5.innerHTML = pengeluaranTerbesar.map((t,i)=>`
       <div class="top-item" style="animation-delay:${i*0.05}s">
         <div class="top-rank">${i+1}</div>
-        <div class="top-info"><div class="top-name">${t.keterangan}</div><div class="top-cat">${t.kategori} · ${formatDate(t.tanggal)}</div></div>
+        <div class="top-info"><div class="top-name">${t.keterangan}</div><div class="top-cat">${t.kategori} � ${formatDate(t.tanggal)}</div></div>
         <div class="top-amount">-${formatRp(t.nominal)}</div>
       </div>`).join('');
   }
 
   const angRes = await apiCall('GET','/api/anggaran');
   const statsAng = document.getElementById('stats-anggaran');
-  if(angRes.success&&angRes.data.length>0){
+  if(angRes.success && angRes.data.length>0){
     statsAng.innerHTML = angRes.data.map(a=>{
-      const pct = a.limit>0?Math.min((a.terpakai/a.limit)*100,100):0;
+      const pct = a.limit>0 ? Math.min((a.terpakai/a.limit)*100,100) : 0;
       const cls = pct>=90?'danger':pct>=70?'warning':'safe';
       return `<div class="anggaran-item">
         <div class="anggaran-header">
-          <div><div class="anggaran-name">${a.nama}</div><div class="anggaran-cat">${a.kategori} · ${a.periode}</div></div>
+          <div><div class="anggaran-name">${a.nama}</div><div class="anggaran-cat">${a.kategori} � ${a.periode}</div></div>
           <div class="anggaran-amounts"><div class="anggaran-used">-${formatRp(a.terpakai)}</div><div class="anggaran-limit">/ ${formatRp(a.limit)}</div></div>
         </div>
         <div class="anggaran-bar"><div class="anggaran-bar-fill ${cls}" style="width:${pct}%"></div></div>
@@ -1742,7 +1547,6 @@ async function loadWallet(){
   const sumRes = await apiCall('GET','/api/summary');
   if(sumRes.success){ document.getElementById('wallet-saldo').textContent = formatRp(sumRes.data.saldo); }
 
-  // Tampilkan tombol tambah siswa jika admin/bendahara
   const tambahBtn = document.getElementById('admin-tambah-siswa');
   if(currentUser){
     tambahBtn.innerHTML = `<div class="section-link" onclick="openTambahSiswaModal()">+ Tambah Siswa</div>`;
@@ -1754,8 +1558,8 @@ async function loadWallet(){
   if(res.success){
     allSiswaData = res.data;
     const total = allSiswaData.length;
-    const lunas = allSiswaData.filter(s=>getSiswaStatus(s,currentMinggu)).length;
-    const pct = total>0?(lunas/total*100):0;
+    const lunas = allSiswaData.filter(s=>getSiswaStatus(s, currentMinggu)).length;
+    const pct = total>0 ? (lunas/total*100) : 0;
     document.getElementById('wallet-lunas-count').textContent = `Lunas: ${lunas} siswa`;
     document.getElementById('wallet-total-count').textContent = `Total: ${total} siswa`;
     document.getElementById('wallet-progress-bar').style.width = pct+'%';
@@ -1765,20 +1569,37 @@ async function loadWallet(){
 
 function getSiswaStatus(siswa, minggu){
   const now = new Date();
-  const p = siswa.pembayaran.find(p=>p.minggu===minggu&&p.bulan===(now.getMonth()+1)&&p.tahun===now.getFullYear());
+  const p = siswa.pembayaran.find(p=>
+    p.minggu===minggu &&
+    p.bulan===(now.getMonth()+1) &&
+    p.tahun===now.getFullYear()
+  );
   return p && p.status==='Lunas';
 }
 
 function getSiswaDetail(siswa, minggu){
   const now = new Date();
-  return siswa.pembayaran.find(p=>p.minggu===minggu&&p.bulan===(now.getMonth()+1)&&p.tahun===now.getFullYear());
+  return siswa.pembayaran.find(p=>
+    p.minggu===minggu &&
+    p.bulan===(now.getMonth()+1) &&
+    p.tahun===now.getFullYear()
+  );
 }
 
 function setWeekTab(minggu, el){
   currentMinggu = minggu;
   document.querySelectorAll('.week-tab').forEach(t=>t.classList.remove('active'));
   el.classList.add('active');
-  document.getElementById('siswa-week-label').textContent = `Minggu ke-${minggu} · ${MONTHS[new Date().getMonth()]} ${new Date().getFullYear()}`;
+  document.getElementById('siswa-week-label').textContent =
+    `Minggu ke-${minggu} � ${MONTHS[new Date().getMonth()]} ${new Date().getFullYear()}`;
+
+  // Update counter lunas
+  if(allSiswaData.length>0){
+    const lunas = allSiswaData.filter(s=>getSiswaStatus(s,minggu)).length;
+    const pct = allSiswaData.length>0 ? (lunas/allSiswaData.length*100) : 0;
+    document.getElementById('wallet-lunas-count').textContent = `Lunas: ${lunas} siswa`;
+    document.getElementById('wallet-progress-bar').style.width = pct+'%';
+  }
   filterSiswa();
 }
 
@@ -1790,7 +1611,7 @@ function filterSiswa(){
 
 function renderSiswaList(data){
   const c = document.getElementById('wallet-siswa-list');
-  if(!data||data.length===0){
+  if(!data || data.length===0){
     c.innerHTML = `<div class="empty-state"><i class="fas fa-users"></i><p>Belum ada siswa terdaftar</p></div>`;
     return;
   }
@@ -1798,15 +1619,22 @@ function renderSiswaList(data){
     const lunas = getSiswaStatus(s, currentMinggu);
     const detail = getSiswaDetail(s, currentMinggu);
     const initials = s.nama.split(' ').map(n=>n[0]).join('').toUpperCase().slice(0,2);
-    const statusText = lunas ? `✅ Lunas${detail?` · ${formatRp(detail.nominal)}`:''}`
-                              : `❌ Belum Lunas${detail?` · ${formatRp(detail.nominal)} (kurang ${formatRp(iuranMinimal-detail.nominal)})`:''}`;
+    const kurang = detail && !lunas ? ` � kurang ${formatRp(iuranMinimal - detail.nominal)}` : '';
+    const statusText = lunas
+      ? ` Lunas${detail?' � '+formatRp(detail.nominal):''}`
+      : ` Belum Lunas${detail?' � '+formatRp(detail.nominal)+kurang:''}`;
+
     const actionBtn = currentUser
       ? (!lunas
           ? `<button class="pay-btn" onclick="openBayarModal('${s._id}','${s.nama}')">Bayar</button>`
           : `<span class="badge-paid">LUNAS</span>`)
-      : (lunas ? `<span class="badge-paid">LUNAS</span>` : `<span class="badge-unpaid">BELUM</span>`);
+      : (lunas
+          ? `<span class="badge-paid">LUNAS</span>`
+          : `<span class="badge-unpaid">BELUM</span>`);
 
-    const deleteBtn = currentUser ? `<button class="delete-btn" onclick="hapusSiswa('${s._id}')"><i class="fas fa-trash"></i></button>` : '';
+    const deleteBtn = currentUser
+      ? `<button class="delete-btn" onclick="hapusSiswa('${s._id}')"><i class="fas fa-trash"></i></button>`
+      : '';
 
     return `<div class="siswa-item" style="animation-delay:${i*0.03}s">
       <div class="siswa-avatar">${initials}</div>
@@ -1829,8 +1657,8 @@ function openTambahSiswaModal(){
 }
 
 function switchSiswaTab(tab){
-  document.getElementById('siswa-single-form').style.display = tab==='single'?'block':'none';
-  document.getElementById('siswa-bulk-form').style.display = tab==='bulk'?'block':'none';
+  document.getElementById('siswa-single-form').style.display = tab==='single' ? 'block' : 'none';
+  document.getElementById('siswa-bulk-form').style.display = tab==='bulk' ? 'block' : 'none';
   document.getElementById('tab-single').className = 'filter-tab'+(tab==='single'?' active':'');
   document.getElementById('tab-bulk').className = 'filter-tab'+(tab==='bulk'?' active':'');
 }
@@ -1847,7 +1675,7 @@ async function simpanSiswaSingle(){
     btn.disabled = false;
     if(res.success){
       closeModal('modal-siswa');
-      showToast('Siswa berhasil ditambahkan! ✅');
+      showToast('Siswa berhasil ditambahkan! ');
       loadWallet();
     } else showToast(res.message||'Gagal','error');
   }, 800);
@@ -1877,7 +1705,8 @@ function openBayarModal(id, nama){
   if(!currentUser){ showToast('Hanya bendahara/admin','error'); return; }
   currentSiswaId = id;
   document.getElementById('bayar-nama-display').textContent = nama;
-  document.getElementById('bayar-minggu-display').textContent = `Pembayaran Minggu ke-${currentMinggu} · ${MONTHS[new Date().getMonth()]} ${new Date().getFullYear()}`;
+  document.getElementById('bayar-minggu-display').textContent =
+    `Pembayaran Minggu ke-${currentMinggu} � ${MONTHS[new Date().getMonth()]} ${new Date().getFullYear()}`;
   document.getElementById('bayar-nominal').value = '';
   document.getElementById('bayar-info-minimal').textContent = `Minimal lunas: ${formatRp(iuranMinimal)}`;
   openModal('modal-bayar');
@@ -1885,14 +1714,16 @@ function openBayarModal(id, nama){
 
 async function prosesBayar(){
   const nominal = document.getElementById('bayar-nominal').value;
-  if(!nominal||parseFloat(nominal)<=0){ showToast('Nominal harus lebih dari 0!','error'); return; }
+  if(!nominal || parseFloat(nominal)<=0){ showToast('Nominal harus lebih dari 0!','error'); return; }
   const now = new Date();
   const btn = document.getElementById('btn-proses-bayar');
   btn.disabled = true;
   showProgress('Memproses pembayaran...');
   const res = await apiCall('PUT',`/api/siswa/${currentSiswaId}/bayar`,{
-    nominal, minggu:currentMinggu,
-    bulan: now.getMonth()+1, tahun: now.getFullYear()
+    nominal,
+    minggu: currentMinggu,
+    bulan: now.getMonth()+1,
+    tahun: now.getFullYear()
   });
   finishProgress(res.success);
   setTimeout(()=>{
@@ -1913,7 +1744,7 @@ async function hapusSiswa(id){
   const res = await apiCall('DELETE',`/api/siswa/${id}`);
   finishProgress(res.success);
   setTimeout(()=>{
-    if(res.success){ showToast('Siswa dihapus 🗑️'); loadWallet(); }
+    if(res.success){ showToast('Siswa dihapus '); loadWallet(); }
     else showToast(res.message||'Gagal','error');
   }, 800);
 }
@@ -1927,11 +1758,13 @@ function openAnggaranModal(){
 async function loadAnggaranModal(){
   const res = await apiCall('GET','/api/anggaran');
   const c = document.getElementById('anggaran-list-modal');
-  if(res.success&&res.data.length>0){
+  if(res.success && res.data.length>0){
     c.innerHTML = res.data.map(a=>{
-      const pct = a.limit>0?Math.min((a.terpakai/a.limit)*100,100):0;
+      const pct = a.limit>0 ? Math.min((a.terpakai/a.limit)*100,100) : 0;
       const cls = pct>=90?'danger':pct>=70?'warning':'safe';
-      const delBtn = currentUser ? `<button class="delete-btn" onclick="hapusAnggaran('${a._id}')"><i class="fas fa-trash"></i></button>` : '';
+      const delBtn = currentUser
+        ? `<button class="delete-btn" onclick="hapusAnggaran('${a._id}')"><i class="fas fa-trash"></i></button>`
+        : '';
       return `<div class="anggaran-item">
         <div class="anggaran-header">
           <div><div class="anggaran-name">${a.nama}</div><div class="anggaran-cat">${a.kategori}</div></div>
@@ -1941,10 +1774,11 @@ async function loadAnggaranModal(){
           </div>
         </div>
         <div class="anggaran-bar"><div class="anggaran-bar-fill ${cls}" style="width:${pct}%"></div></div>
+        <div class="anggaran-footer"><span>Sisa: ${formatRp(a.limit-a.terpakai)}</span><span>${pct.toFixed(0)}% terpakai</span></div>
       </div>`;
     }).join('');
   } else {
-    c.innerHTML = `<div style="text-align:center;color:var(--text-muted);font-size:13px;padding:12px">Belum ada anggaran</div>`;
+    c.innerHTML = `<div style="text-align:center;color:var(--text-muted);font-size:13px;padding:14px">Belum ada anggaran</div>`;
   }
 }
 
@@ -1967,7 +1801,7 @@ async function simpanAnggaran(){
       document.getElementById('ang-nama').value='';
       document.getElementById('ang-kategori').value='';
       document.getElementById('ang-limit').value='';
-      showToast('Anggaran berhasil ditambahkan! ✅');
+      showToast('Anggaran berhasil ditambahkan! ');
       loadAnggaranModal();
     } else showToast(res.message||'Gagal','error');
   }, 800);
@@ -1980,125 +1814,8 @@ async function hapusAnggaran(id){
   const res = await apiCall('DELETE',`/api/anggaran/${id}`);
   finishProgress(res.success);
   setTimeout(()=>{
-    if(res.success){ showToast('Anggaran dihapus 🗑️'); loadAnggaranModal(); }
+    if(res.success){ showToast('Anggaran dihapus '); loadAnggaranModal(); }
     else showToast(res.message||'Gagal','error');
-  }, 800);
-}
-
-// ==================== EDIT PROFIL SENDIRI ====================
-function openEditProfilModal(){
-  if(!currentUser){ showToast('Harus login dulu','error'); return; }
-
-  // Isi avatar inisial
-  const initials = currentUser.nama.split(' ').map(n=>n[0]).join('').toUpperCase().slice(0,2);
-  document.getElementById('edit-profil-avatar').textContent = initials;
-  document.getElementById('edit-profil-nama-display').textContent = currentUser.nama;
-  document.getElementById('edit-profil-role-display').textContent =
-    `@${currentUser.username} · ${currentUser.role === 'admin' ? '👑 Admin' : '💰 Bendahara'}`;
-
-  // Isi form dengan data sekarang
-  document.getElementById('edit-nama').value = currentUser.nama;
-  document.getElementById('edit-username').value = currentUser.username;
-
-  // Reset field password
-  document.getElementById('edit-pass-lama').value = '';
-  document.getElementById('edit-pass-baru').value = '';
-  document.getElementById('edit-pass-konfirm').value = '';
-
-  openModal('modal-edit-profil');
-}
-
-async function simpanEditProfil(){
-  const nama       = document.getElementById('edit-nama').value.trim();
-  const username   = document.getElementById('edit-username').value.trim();
-  const passLama   = document.getElementById('edit-pass-lama').value;
-  const passBaru   = document.getElementById('edit-pass-baru').value;
-  const passKonfirm= document.getElementById('edit-pass-konfirm').value;
-
-  // Validasi nama & username
-  if(!nama){
-    showToast('Nama tidak boleh kosong!','error');
-    document.getElementById('edit-nama').focus();
-    return;
-  }
-  if(!username){
-    showToast('Username tidak boleh kosong!','error');
-    document.getElementById('edit-username').focus();
-    return;
-  }
-
-  // Validasi password (hanya jika salah satu diisi)
-  const adaPerubahanPassword = passLama || passBaru || passKonfirm;
-  if(adaPerubahanPassword){
-    if(!passLama){
-      showToast('Masukkan password lama terlebih dahulu!','error');
-      document.getElementById('edit-pass-lama').focus();
-      return;
-    }
-    if(!passBaru){
-      showToast('Masukkan password baru!','error');
-      document.getElementById('edit-pass-baru').focus();
-      return;
-    }
-    if(passBaru.length < 6){
-      showToast('Password baru minimal 6 karakter!','error');
-      document.getElementById('edit-pass-baru').focus();
-      return;
-    }
-    if(passBaru !== passKonfirm){
-      showToast('Konfirmasi password tidak cocok!','error');
-      document.getElementById('edit-pass-konfirm').focus();
-      return;
-    }
-  }
-
-  const btn = document.getElementById('btn-simpan-profil');
-  btn.disabled = true;
-
-  // Jika ada perubahan password, verifikasi password lama dulu
-  if(adaPerubahanPassword){
-    showProgress('Memverifikasi password lama...');
-    const verif = await apiCall('POST','/api/auth/login',{
-      username: currentUser.username,
-      password: passLama
-    });
-    if(!verif.success){
-      finishProgress(false);
-      setTimeout(()=>{
-        btn.disabled = false;
-        showToast('Password lama salah!','error');
-        document.getElementById('edit-pass-lama').value = '';
-        document.getElementById('edit-pass-lama').focus();
-      }, 800);
-      return;
-    }
-  }
-
-  // Kirim update
-  const updateData = { nama, username };
-  if(adaPerubahanPassword) updateData.password = passBaru;
-
-  showProgress('Menyimpan perubahan...');
-  const res = await apiCall('PUT', `/api/users/${currentUser.id}`, updateData);
-  finishProgress(res.success);
-
-  setTimeout(()=>{
-    btn.disabled = false;
-    if(res.success){
-      // Update data session lokal
-      currentUser.nama = nama;
-      currentUser.username = username;
-      localStorage.setItem('kas_user', JSON.stringify(currentUser));
-
-      closeModal('modal-edit-profil');
-      showToast('Profil berhasil diperbarui! ✅');
-
-      // Refresh halaman yang terlihat
-      loadHome();
-      loadMe();
-    } else {
-      showToast(res.message || 'Gagal menyimpan perubahan','error');
-    }
   }, 800);
 }
 
@@ -2106,25 +1823,24 @@ async function simpanEditProfil(){
 async function loadMe(){
   const setRes = await apiCall('GET','/api/pengaturan');
   if(setRes.success){
-    const d = setRes.data;
-    document.getElementById('me-kelas').textContent = d.namaKelas||'Kelas X RPL';
-    document.getElementById('me-tahun').textContent = `Tahun Ajaran ${d.tahunAjaran||'2024/2025'}`;
+    document.getElementById('me-kelas').textContent = setRes.data.namaKelas||'Kelas X RPL';
+    document.getElementById('me-tahun').textContent = `Tahun Ajaran ${setRes.data.tahunAjaran||'2024/2025'}`;
   }
 
   if(currentUser){
-    document.getElementById('me-role').textContent = currentUser.role==='admin'?'👑 Administrator':'💰 Bendahara';
+    document.getElementById('me-role').textContent = currentUser.role==='admin' ? ' Administrator' : ' Bendahara';
   } else {
-    document.getElementById('me-role').textContent = '👀 Pengunjung / Publik';
+    document.getElementById('me-role').textContent = ' Pengunjung / Publik';
   }
 
   const menuList = document.getElementById('me-menu-list');
   let menus = `
-    <div class="menu-item" onclick="showPage('page-transaksi-all')">
+    <div class="menu-item" onclick="showPage('page-transaksi-all')" style="animation-delay:0.05s">
       <div class="menu-icon blue"><i class="fas fa-list"></i></div>
       <div class="menu-text"><div class="menu-title">Riwayat Transaksi</div><div class="menu-sub">Semua catatan keuangan</div></div>
       <div class="menu-arrow"><i class="fas fa-chevron-right"></i></div>
     </div>
-    <div class="menu-item" onclick="openAnggaranModal()">
+    <div class="menu-item" onclick="openAnggaranModal()" style="animation-delay:0.1s">
       <div class="menu-icon green"><i class="fas fa-chart-bar"></i></div>
       <div class="menu-text"><div class="menu-title">Lihat Anggaran</div><div class="menu-sub">Monitor limit pengeluaran</div></div>
       <div class="menu-arrow"><i class="fas fa-chevron-right"></i></div>
@@ -2132,27 +1848,34 @@ async function loadMe(){
 
   if(currentUser){
     menus += `
-    <div class="menu-item" onclick="openEditProfilModal()" style="animation-delay:0.05s">
+    <div class="menu-item" onclick="openEditProfilModal()" style="animation-delay:0.15s">
       <div class="menu-icon purple"><i class="fas fa-user-edit"></i></div>
-      <div class="menu-text">
-        <div class="menu-title">Edit Profil Saya</div>
-        <div class="menu-sub">Ubah nama, username & password</div>
-      </div>
+      <div class="menu-text"><div class="menu-title">Edit Profil Saya</div><div class="menu-sub">Ubah nama, username & password</div></div>
       <div class="menu-arrow"><i class="fas fa-chevron-right"></i></div>
     </div>
-    <div class="menu-item" onclick="openPengaturanModal()">
+    <div class="menu-item" onclick="openPengaturanModal()" style="animation-delay:0.2s">
+      <div class="menu-icon purple"><i class="fas fa-cog"></i></div>
+      <div class="menu-text"><div class="menu-title">Pengaturan Kelas</div><div class="menu-sub">Nama kelas, iuran minimal</div></div>
+      <div class="menu-arrow"><i class="fas fa-chevron-right"></i></div>
+    </div>
+    <div class="menu-item" onclick="exportData()" style="animation-delay:0.25s">
+      <div class="menu-icon green"><i class="fas fa-download"></i></div>
+      <div class="menu-text"><div class="menu-title">Export Data CSV</div><div class="menu-sub">Unduh laporan keuangan</div></div>
+      <div class="menu-arrow"><i class="fas fa-chevron-right"></i></div>
+    </div>`;
+  }
 
-  if(currentUser&&currentUser.role==='admin'){
+  if(currentUser && currentUser.role==='admin'){
     menus += `
-    <div class="menu-item" onclick="openUsersModal()">
+    <div class="menu-item" onclick="openUsersModal()" style="animation-delay:0.3s">
       <div class="menu-icon red"><i class="fas fa-users-cog"></i></div>
-      <div class="menu-text"><div class="menu-title">Kelola Akun</div><div class="menu-sub">Tambah/hapus bendahara</div></div>
+      <div class="menu-text"><div class="menu-title">Kelola Akun</div><div class="menu-sub">Tambah/hapus akun bendahara</div></div>
       <div class="menu-arrow"><i class="fas fa-chevron-right"></i></div>
     </div>`;
   }
 
   menus += `
-    <div class="menu-item" onclick="openModal('modal-about')">
+    <div class="menu-item" onclick="openModal('modal-about')" style="animation-delay:0.35s">
       <div class="menu-icon purple"><i class="fas fa-info-circle"></i></div>
       <div class="menu-text"><div class="menu-title">Tentang Aplikasi</div><div class="menu-sub">Kas Kelas X RPL v2.0</div></div>
       <div class="menu-arrow"><i class="fas fa-chevron-right"></i></div>
@@ -2160,14 +1883,14 @@ async function loadMe(){
 
   if(currentUser){
     menus += `
-    <div class="menu-item" onclick="logout()" style="margin-top:8px">
+    <div class="menu-item" onclick="logout()" style="animation-delay:0.4s;margin-top:4px">
       <div class="menu-icon red"><i class="fas fa-sign-out-alt"></i></div>
       <div class="menu-text"><div class="menu-title" style="color:var(--accent-red)">Logout</div><div class="menu-sub">Keluar dari akun</div></div>
       <div class="menu-arrow"><i class="fas fa-chevron-right"></i></div>
     </div>`;
   } else {
     menus += `
-    <div class="menu-item" onclick="showPage('page-login')">
+    <div class="menu-item" onclick="window.location.href='/login.html'" style="animation-delay:0.4s;margin-top:4px">
       <div class="menu-icon purple"><i class="fas fa-sign-in-alt"></i></div>
       <div class="menu-text"><div class="menu-title">Login Bendahara</div><div class="menu-sub">Masuk sebagai admin/bendahara</div></div>
       <div class="menu-arrow"><i class="fas fa-chevron-right"></i></div>
@@ -2175,10 +1898,6 @@ async function loadMe(){
   }
 
   menuList.innerHTML = menus;
-  // Animasi menu item
-  menuList.querySelectorAll('.menu-item').forEach((item,i)=>{
-    item.style.animationDelay = `${i*0.05}s`;
-  });
 }
 
 // ==================== PENGATURAN ====================
@@ -2191,10 +1910,9 @@ async function openPengaturanModal(){
   if(!currentUser){ showToast('Hanya bendahara/admin','error'); return; }
   const res = await apiCall('GET','/api/pengaturan');
   if(res.success){
-    const d = res.data;
-    document.getElementById('set-kelas').value = d.namaKelas||'';
-    document.getElementById('set-iuran').value = d.iuranMinimal||3000;
-    document.getElementById('set-tahun').value = d.tahunAjaran||'';
+    document.getElementById('set-kelas').value = res.data.namaKelas||'';
+    document.getElementById('set-iuran').value = res.data.iuranMinimal||3000;
+    document.getElementById('set-tahun').value = res.data.tahunAjaran||'';
   }
   openModal('modal-pengaturan');
 }
@@ -2214,7 +1932,7 @@ async function simpanPengaturan(){
     btn.disabled = false;
     if(res.success){
       closeModal('modal-pengaturan');
-      showToast('Pengaturan berhasil disimpan! ✅');
+      showToast('Pengaturan berhasil disimpan! ');
       iuranMinimal = parseFloat(data.iuranMinimal)||3000;
       loadHome();
       loadMe();
@@ -2222,9 +1940,88 @@ async function simpanPengaturan(){
   }, 800);
 }
 
+// ==================== EDIT PROFIL ====================
+function openEditProfilModal(){
+  if(!currentUser){ showToast('Harus login dulu','error'); return; }
+  const initials = currentUser.nama.split(' ').map(n=>n[0]).join('').toUpperCase().slice(0,2);
+  document.getElementById('edit-profil-avatar').textContent = initials;
+  document.getElementById('edit-profil-nama-display').textContent = currentUser.nama;
+  document.getElementById('edit-profil-role-display').textContent =
+    `@${currentUser.username} � ${currentUser.role==='admin'?' Admin':' Bendahara'}`;
+  document.getElementById('edit-nama').value = currentUser.nama;
+  document.getElementById('edit-username').value = currentUser.username;
+  document.getElementById('edit-pass-lama').value = '';
+  document.getElementById('edit-pass-baru').value = '';
+  document.getElementById('edit-pass-konfirm').value = '';
+  openModal('modal-edit-profil');
+}
+
+async function simpanEditProfil(){
+  const nama        = document.getElementById('edit-nama').value.trim();
+  const username    = document.getElementById('edit-username').value.trim();
+  const passLama    = document.getElementById('edit-pass-lama').value;
+  const passBaru    = document.getElementById('edit-pass-baru').value;
+  const passKonfirm = document.getElementById('edit-pass-konfirm').value;
+
+  if(!nama){ showToast('Nama tidak boleh kosong!','error'); document.getElementById('edit-nama').focus(); return; }
+  if(!username){ showToast('Username tidak boleh kosong!','error'); document.getElementById('edit-username').focus(); return; }
+
+  const adaPerubahanPassword = passLama || passBaru || passKonfirm;
+  if(adaPerubahanPassword){
+    if(!passLama){ showToast('Masukkan password lama!','error'); document.getElementById('edit-pass-lama').focus(); return; }
+    if(!passBaru){ showToast('Masukkan password baru!','error'); document.getElementById('edit-pass-baru').focus(); return; }
+    if(passBaru.length<6){ showToast('Password baru minimal 6 karakter!','error'); return; }
+    if(passBaru!==passKonfirm){ showToast('Konfirmasi password tidak cocok!','error'); document.getElementById('edit-pass-konfirm').focus(); return; }
+  }
+
+  const btn = document.getElementById('btn-simpan-profil');
+  btn.disabled = true;
+
+  // Verifikasi password lama jika ada perubahan password
+  if(adaPerubahanPassword){
+    showProgress('Memverifikasi password lama...');
+    const verif = await apiCall('POST','/api/auth/login',{
+      username: currentUser.username,
+      password: passLama
+    });
+    if(!verif.success){
+      finishProgress(false);
+      setTimeout(()=>{
+        btn.disabled = false;
+        showToast('Password lama salah!','error');
+        document.getElementById('edit-pass-lama').value='';
+        document.getElementById('edit-pass-lama').focus();
+      }, 800);
+      return;
+    }
+  }
+
+  const updateData = {nama, username};
+  if(adaPerubahanPassword) updateData.password = passBaru;
+
+  showProgress('Menyimpan perubahan...');
+  const res = await apiCall('PUT',`/api/users/${currentUser.id}`, updateData);
+  finishProgress(res.success);
+
+  setTimeout(()=>{
+    btn.disabled = false;
+    if(res.success){
+      currentUser.nama = nama;
+      currentUser.username = username;
+      localStorage.setItem('kas_user', JSON.stringify(currentUser));
+      closeModal('modal-edit-profil');
+      showToast('Profil berhasil diperbarui! ');
+      loadHome();
+      loadMe();
+    } else {
+      showToast(res.message||'Gagal menyimpan perubahan','error');
+    }
+  }, 800);
+}
+
 // ==================== KELOLA USER ====================
 async function openUsersModal(){
-  if(!currentUser||currentUser.role!=='admin'){ showToast('Hanya admin','error'); return; }
+  if(!currentUser || currentUser.role!=='admin'){ showToast('Hanya admin','error'); return; }
   document.getElementById('user-nama').value='';
   document.getElementById('user-username').value='';
   document.getElementById('user-password').value='';
@@ -2236,13 +2033,15 @@ async function openUsersModal(){
 async function loadUsersList(){
   const res = await apiCall('GET','/api/users');
   const c = document.getElementById('users-list');
-  if(res.success&&res.data.length>0){
+  if(res.success && res.data.length>0){
     c.innerHTML = res.data.map(u=>{
       const initials = u.nama.split(' ').map(n=>n[0]).join('').toUpperCase().slice(0,2);
-      const delBtn = u.role!=='admin' ? `<button class="delete-btn" onclick="hapusUser('${u._id}')"><i class="fas fa-trash"></i></button>` : '';
+      const delBtn = u.role!=='admin'
+        ? `<button class="delete-btn" onclick="hapusUser('${u._id}')"><i class="fas fa-trash"></i></button>`
+        : '';
       return `<div class="user-item">
         <div class="user-avatar ${u.role}">${initials}</div>
-        <div class="siswa-info">
+        <div class="siswa-info" style="flex:1;min-width:0">
           <div class="siswa-name">${u.nama}</div>
           <div style="font-size:11px;color:var(--text-secondary)">@${u.username}</div>
         </div>
@@ -2253,7 +2052,7 @@ async function loadUsersList(){
       </div>`;
     }).join('');
   } else {
-    c.innerHTML = `<div style="text-align:center;color:var(--text-muted);font-size:13px;padding:10px">Belum ada akun</div>`;
+    c.innerHTML = `<div style="text-align:center;color:var(--text-muted);font-size:13px;padding:12px">Belum ada akun</div>`;
   }
 }
 
@@ -2273,7 +2072,7 @@ async function simpanUser(){
   setTimeout(()=>{
     btn.disabled = false;
     if(res.success){
-      showToast('Akun berhasil dibuat! ✅');
+      showToast('Akun berhasil dibuat! ');
       document.getElementById('user-nama').value='';
       document.getElementById('user-username').value='';
       document.getElementById('user-password').value='';
@@ -2288,7 +2087,7 @@ async function hapusUser(id){
   const res = await apiCall('DELETE',`/api/users/${id}`);
   finishProgress(res.success);
   setTimeout(()=>{
-    if(res.success){ showToast('Akun dihapus 🗑️'); loadUsersList(); }
+    if(res.success){ showToast('Akun dihapus '); loadUsersList(); }
     else showToast(res.message||'Gagal','error');
   }, 800);
 }
@@ -2299,16 +2098,20 @@ async function exportData(){
   showProgress('Mengexport data...');
   const res = await apiCall('GET','/api/transaksi');
   finishProgress(res.success);
-  if(!res.success||res.data.length===0){ showToast('Tidak ada data','error'); return; }
+  if(!res.success||res.data.length===0){ showToast('Tidak ada data untuk diekspor','error'); return; }
   const headers = ['Tanggal','Jenis','Keterangan','Kategori','Nominal','Sumber'];
-  const rows = res.data.map(t=>[formatDate(t.tanggal),t.jenis,t.keterangan,t.kategori,t.nominal,t.sumber||'']);
+  const rows = res.data.map(t=>[
+    formatDate(t.tanggal), t.jenis, `"${t.keterangan}"`, t.kategori, t.nominal, t.sumber||''
+  ]);
   const csv = [headers,...rows].map(r=>r.join(',')).join('\n');
-  const blob = new Blob([csv],{type:'text/csv'});
+  const blob = new Blob(['\ufeff'+csv],{type:'text/csv;charset=utf-8'});
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
-  a.href=url; a.download=`kas-kelas-${new Date().toLocaleDateString('id-ID')}.csv`;
+  a.href=url;
+  a.download=`kas-kelas-${new Date().toLocaleDateString('id-ID').replace(/\//g,'-')}.csv`;
   a.click();
-  showToast('Data berhasil diekspor! 📥');
+  URL.revokeObjectURL(url);
+  showToast('Data berhasil diekspor! ');
 }
 
 // ==================== INIT ====================
@@ -2318,30 +2121,34 @@ document.addEventListener('DOMContentLoaded', ()=>{
   if(savedTheme==='light'){
     isLight = true;
     document.body.classList.add('light-mode');
-    document.querySelectorAll('.theme-btn').forEach(b=>b.textContent='☀️');
+    document.querySelectorAll('.theme-btn').forEach(b=>b.textContent='');
   }
 
-  // Cek session - jika tidak ada, redirect ke login
+  // Cek session
   const savedUser = localStorage.getItem('kas_user');
   const kasMode = localStorage.getItem('kas_mode');
-  
+
   if(savedUser){
     try{
       currentUser = JSON.parse(savedUser);
-    }catch(e){ 
-      localStorage.removeItem('kas_user'); 
+    }catch(e){
+      localStorage.removeItem('kas_user');
     }
   }
-  
-  // Jika bukan publik dan tidak ada user, redirect ke login
-  if(!currentUser && kasMode !== 'publik'){
+
+  // Redirect ke login jika belum ada session sama sekali
+  if(!currentUser && kasMode!=='publik'){
     window.location.href = '/login.html';
     return;
   }
 
+  // Set label minggu & bulan awal
+  document.getElementById('siswa-week-label').textContent =
+    `Minggu ke-1 � ${MONTHS[new Date().getMonth()]} ${new Date().getFullYear()}`;
+  document.getElementById('stats-month-text').textContent =
+    `${MONTHS[currentMonth-1]} ${currentYear}`;
+
   initApp();
-  document.getElementById('siswa-week-label').textContent = `Minggu ke-1 · ${MONTHS[new Date().getMonth()]} ${new Date().getFullYear()}`;
-  document.getElementById('stats-month-text').textContent = `${MONTHS[currentMonth-1]} ${currentYear}`;
 });
 </script>
 </body>
