@@ -1199,6 +1199,89 @@ body{
     <button class="btn btn-primary" onclick="closeModal('modal-about')">Tutup</button>
   </div>
 </div>
+<!-- ===================== MODAL: EDIT PROFIL ===================== -->
+<div class="modal-overlay" id="modal-edit-profil">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-title">✏️ Edit Profil Saya</div>
+
+    <!-- INFO CARD -->
+    <div style="background:var(--bg-card);border-radius:14px;padding:16px;margin-bottom:20px;border:1px solid var(--border);display:flex;align-items:center;gap:12px">
+      <div style="width:46px;height:46px;border-radius:14px;background:linear-gradient(135deg,var(--accent-purple),#8b5cf6);display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;color:white;flex-shrink:0" id="edit-profil-avatar">AD</div>
+      <div>
+        <div style="font-size:15px;font-weight:700" id="edit-profil-nama-display">-</div>
+        <div style="font-size:12px;color:var(--accent-purple);margin-top:2px" id="edit-profil-role-display">-</div>
+      </div>
+    </div>
+
+    <!-- SECTION: NAMA & USERNAME -->
+    <div style="font-size:11px;font-weight:700;color:var(--text-secondary);text-transform:uppercase;letter-spacing:1px;margin-bottom:12px;display:flex;align-items:center;gap:8px">
+      <i class="fas fa-user" style="color:var(--accent-purple)"></i> Nama & Username
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Nama Lengkap</label>
+      <input type="text" class="form-input" id="edit-nama" placeholder="Masukkan nama baru"/>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Username</label>
+      <input type="text" class="form-input" id="edit-username" placeholder="Masukkan username baru" autocomplete="off"/>
+    </div>
+
+    <!-- DIVIDER -->
+    <div style="height:1px;background:var(--border);margin:18px 0"></div>
+
+    <!-- SECTION: PASSWORD -->
+    <div style="font-size:11px;font-weight:700;color:var(--text-secondary);text-transform:uppercase;letter-spacing:1px;margin-bottom:12px;display:flex;align-items:center;gap:8px">
+      <i class="fas fa-lock" style="color:var(--accent-purple)"></i> Ganti Password
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Password Lama</label>
+      <div style="position:relative">
+        <input type="password" class="form-input" id="edit-pass-lama" placeholder="Masukkan password lama" style="padding-right:46px" autocomplete="current-password"/>
+        <span class="toggle-eye" onclick="toggleEye('edit-pass-lama',this)">
+          <i class="fas fa-eye"></i>
+        </span>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Password Baru</label>
+      <div style="position:relative">
+        <input type="password" class="form-input" id="edit-pass-baru" placeholder="Minimal 6 karakter" style="padding-right:46px" autocomplete="new-password"/>
+        <span class="toggle-eye" onclick="toggleEye('edit-pass-baru',this)">
+          <i class="fas fa-eye"></i>
+        </span>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Konfirmasi Password Baru</label>
+      <div style="position:relative">
+        <input type="password" class="form-input" id="edit-pass-konfirm" placeholder="Ulangi password baru" style="padding-right:46px" autocomplete="new-password"/>
+        <span class="toggle-eye" onclick="toggleEye('edit-pass-konfirm',this)">
+          <i class="fas fa-eye"></i>
+        </span>
+      </div>
+    </div>
+
+    <!-- HINT -->
+    <div style="background:rgba(108,99,255,0.08);border:1px solid rgba(108,99,255,0.2);border-radius:10px;padding:11px 14px;margin-bottom:16px;font-size:12px;color:var(--text-secondary);display:flex;align-items:flex-start;gap:8px">
+      <i class="fas fa-info-circle" style="color:var(--accent-purple);margin-top:1px;flex-shrink:0"></i>
+      <span>Kosongkan field password jika tidak ingin menggantinya. Isi password lama hanya jika ingin mengganti password.</span>
+    </div>
+
+    <!-- BUTTONS -->
+    <button class="btn btn-primary" onclick="simpanEditProfil()" id="btn-simpan-profil">
+      <i class="fas fa-save"></i> &nbsp;Simpan Perubahan
+    </button>
+    <button class="btn btn-outline" onclick="closeModal('modal-edit-profil')" style="margin-top:8px">
+      Batal
+    </button>
+  </div>
+</div>
 
 <script>
 // ==================== STATE ====================
@@ -1345,16 +1428,15 @@ async function doLogin(){
 function masukSebagaiPublik(){
   currentUser = null;
   localStorage.removeItem('kas_user');
-  showToast('Mode publik aktif 👀','warning');
-  initApp();
+  localStorage.setItem('kas_mode','publik');
+  window.location.href = '/login.html';
 }
 
 function logout(){
   currentUser = null;
   localStorage.removeItem('kas_user');
-  document.getElementById('bottom-nav').style.display = 'none';
-  showPage('page-login');
-  showToast('Berhasil logout');
+  localStorage.removeItem('kas_mode');
+  window.location.href = '/login.html';
 }
 
 // ==================== INIT APP ====================
@@ -1903,6 +1985,123 @@ async function hapusAnggaran(id){
   }, 800);
 }
 
+// ==================== EDIT PROFIL SENDIRI ====================
+function openEditProfilModal(){
+  if(!currentUser){ showToast('Harus login dulu','error'); return; }
+
+  // Isi avatar inisial
+  const initials = currentUser.nama.split(' ').map(n=>n[0]).join('').toUpperCase().slice(0,2);
+  document.getElementById('edit-profil-avatar').textContent = initials;
+  document.getElementById('edit-profil-nama-display').textContent = currentUser.nama;
+  document.getElementById('edit-profil-role-display').textContent =
+    `@${currentUser.username} · ${currentUser.role === 'admin' ? '👑 Admin' : '💰 Bendahara'}`;
+
+  // Isi form dengan data sekarang
+  document.getElementById('edit-nama').value = currentUser.nama;
+  document.getElementById('edit-username').value = currentUser.username;
+
+  // Reset field password
+  document.getElementById('edit-pass-lama').value = '';
+  document.getElementById('edit-pass-baru').value = '';
+  document.getElementById('edit-pass-konfirm').value = '';
+
+  openModal('modal-edit-profil');
+}
+
+async function simpanEditProfil(){
+  const nama       = document.getElementById('edit-nama').value.trim();
+  const username   = document.getElementById('edit-username').value.trim();
+  const passLama   = document.getElementById('edit-pass-lama').value;
+  const passBaru   = document.getElementById('edit-pass-baru').value;
+  const passKonfirm= document.getElementById('edit-pass-konfirm').value;
+
+  // Validasi nama & username
+  if(!nama){
+    showToast('Nama tidak boleh kosong!','error');
+    document.getElementById('edit-nama').focus();
+    return;
+  }
+  if(!username){
+    showToast('Username tidak boleh kosong!','error');
+    document.getElementById('edit-username').focus();
+    return;
+  }
+
+  // Validasi password (hanya jika salah satu diisi)
+  const adaPerubahanPassword = passLama || passBaru || passKonfirm;
+  if(adaPerubahanPassword){
+    if(!passLama){
+      showToast('Masukkan password lama terlebih dahulu!','error');
+      document.getElementById('edit-pass-lama').focus();
+      return;
+    }
+    if(!passBaru){
+      showToast('Masukkan password baru!','error');
+      document.getElementById('edit-pass-baru').focus();
+      return;
+    }
+    if(passBaru.length < 6){
+      showToast('Password baru minimal 6 karakter!','error');
+      document.getElementById('edit-pass-baru').focus();
+      return;
+    }
+    if(passBaru !== passKonfirm){
+      showToast('Konfirmasi password tidak cocok!','error');
+      document.getElementById('edit-pass-konfirm').focus();
+      return;
+    }
+  }
+
+  const btn = document.getElementById('btn-simpan-profil');
+  btn.disabled = true;
+
+  // Jika ada perubahan password, verifikasi password lama dulu
+  if(adaPerubahanPassword){
+    showProgress('Memverifikasi password lama...');
+    const verif = await apiCall('POST','/api/auth/login',{
+      username: currentUser.username,
+      password: passLama
+    });
+    if(!verif.success){
+      finishProgress(false);
+      setTimeout(()=>{
+        btn.disabled = false;
+        showToast('Password lama salah!','error');
+        document.getElementById('edit-pass-lama').value = '';
+        document.getElementById('edit-pass-lama').focus();
+      }, 800);
+      return;
+    }
+  }
+
+  // Kirim update
+  const updateData = { nama, username };
+  if(adaPerubahanPassword) updateData.password = passBaru;
+
+  showProgress('Menyimpan perubahan...');
+  const res = await apiCall('PUT', `/api/users/${currentUser.id}`, updateData);
+  finishProgress(res.success);
+
+  setTimeout(()=>{
+    btn.disabled = false;
+    if(res.success){
+      // Update data session lokal
+      currentUser.nama = nama;
+      currentUser.username = username;
+      localStorage.setItem('kas_user', JSON.stringify(currentUser));
+
+      closeModal('modal-edit-profil');
+      showToast('Profil berhasil diperbarui! ✅');
+
+      // Refresh halaman yang terlihat
+      loadHome();
+      loadMe();
+    } else {
+      showToast(res.message || 'Gagal menyimpan perubahan','error');
+    }
+  }, 800);
+}
+
 // ==================== ME PAGE ====================
 async function loadMe(){
   const setRes = await apiCall('GET','/api/pengaturan');
@@ -1933,17 +2132,15 @@ async function loadMe(){
 
   if(currentUser){
     menus += `
-    <div class="menu-item" onclick="openPengaturanModal()">
-      <div class="menu-icon purple"><i class="fas fa-cog"></i></div>
-      <div class="menu-text"><div class="menu-title">Pengaturan Kelas</div><div class="menu-sub">Nama kelas, iuran minimal</div></div>
+    <div class="menu-item" onclick="openEditProfilModal()" style="animation-delay:0.05s">
+      <div class="menu-icon purple"><i class="fas fa-user-edit"></i></div>
+      <div class="menu-text">
+        <div class="menu-title">Edit Profil Saya</div>
+        <div class="menu-sub">Ubah nama, username & password</div>
+      </div>
       <div class="menu-arrow"><i class="fas fa-chevron-right"></i></div>
     </div>
-    <div class="menu-item" onclick="exportData()">
-      <div class="menu-icon green"><i class="fas fa-download"></i></div>
-      <div class="menu-text"><div class="menu-title">Export Data CSV</div><div class="menu-sub">Unduh laporan keuangan</div></div>
-      <div class="menu-arrow"><i class="fas fa-chevron-right"></i></div>
-    </div>`;
-  }
+    <div class="menu-item" onclick="openPengaturanModal()">
 
   if(currentUser&&currentUser.role==='admin'){
     menus += `
@@ -2124,16 +2321,25 @@ document.addEventListener('DOMContentLoaded', ()=>{
     document.querySelectorAll('.theme-btn').forEach(b=>b.textContent='☀️');
   }
 
-  // Check saved session
+  // Cek session - jika tidak ada, redirect ke login
   const savedUser = localStorage.getItem('kas_user');
+  const kasMode = localStorage.getItem('kas_mode');
+  
   if(savedUser){
     try{
       currentUser = JSON.parse(savedUser);
-      initApp();
-    }catch(e){ localStorage.removeItem('kas_user'); }
+    }catch(e){ 
+      localStorage.removeItem('kas_user'); 
+    }
+  }
+  
+  // Jika bukan publik dan tidak ada user, redirect ke login
+  if(!currentUser && kasMode !== 'publik'){
+    window.location.href = '/login.html';
+    return;
   }
 
-  // Set initial week tab label
+  initApp();
   document.getElementById('siswa-week-label').textContent = `Minggu ke-1 · ${MONTHS[new Date().getMonth()]} ${new Date().getFullYear()}`;
   document.getElementById('stats-month-text').textContent = `${MONTHS[currentMonth-1]} ${currentYear}`;
 });
