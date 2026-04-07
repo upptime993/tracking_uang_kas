@@ -161,13 +161,26 @@ app.put('/api/users/:id', async (req, res) => {
     const user = await User.findById(req.params.id);
     if (!user) return res.status(404).json({ success: false, message: 'User tidak ditemukan' });
 
+    // Cek username duplikat (kecuali milik sendiri)
+    if (username && username !== user.username) {
+      const existing = await User.findOne({ 
+        username: username.toLowerCase(), 
+        _id: { $ne: req.params.id } 
+      });
+      if (existing) return res.status(400).json({ success: false, message: 'Username sudah digunakan' });
+    }
+
     if (username) user.username = username.toLowerCase();
     if (nama) user.nama = nama;
-    if (role) user.role = role;
+    if (role && user.role !== 'admin') user.role = role; // admin tidak bisa diganti rolenya
     if (password) user.password = hashPassword(password);
 
     await user.save();
-    res.json({ success: true, message: 'User berhasil diupdate' });
+    res.json({ 
+      success: true, 
+      data: { id: user._id, username: user.username, nama: user.nama, role: user.role },
+      message: 'Profil berhasil diperbarui' 
+    });
   } catch (e) {
     res.status(500).json({ success: false, message: e.message });
   }
