@@ -161,26 +161,13 @@ app.put('/api/users/:id', async (req, res) => {
     const user = await User.findById(req.params.id);
     if (!user) return res.status(404).json({ success: false, message: 'User tidak ditemukan' });
 
-    // Cek username duplikat (kecuali milik sendiri)
-    if (username && username !== user.username) {
-      const existing = await User.findOne({ 
-        username: username.toLowerCase(), 
-        _id: { $ne: req.params.id } 
-      });
-      if (existing) return res.status(400).json({ success: false, message: 'Username sudah digunakan' });
-    }
-
     if (username) user.username = username.toLowerCase();
     if (nama) user.nama = nama;
-    if (role && user.role !== 'admin') user.role = role; // admin tidak bisa diganti rolenya
+    if (role) user.role = role;
     if (password) user.password = hashPassword(password);
 
     await user.save();
-    res.json({ 
-      success: true, 
-      data: { id: user._id, username: user.username, nama: user.nama, role: user.role },
-      message: 'Profil berhasil diperbarui' 
-    });
+    res.json({ success: true, message: 'User berhasil diupdate' });
   } catch (e) {
     res.status(500).json({ success: false, message: e.message });
   }
@@ -202,16 +189,48 @@ app.delete('/api/users/:id', async (req, res) => {
 app.get('/api/summary', async (req, res) => {
   try {
     const transaksi = await Transaksi.find();
-    const totalPemasukan = transaksi.filter(t => t.jenis === 'pemasukan').reduce((s, t) => s + t.nominal, 0);
-    const totalPengeluaran = transaksi.filter(t => t.jenis === 'pengeluaran').reduce((s, t) => s + t.nominal, 0);
+
+    const totalPemasukan = transaksi
+      .filter(t => t.jenis === 'pemasukan')
+      .reduce((s, t) => s + t.nominal, 0);
+
+    const totalPengeluaran = transaksi
+      .filter(t => t.jenis === 'pengeluaran')
+      .reduce((s, t) => s + t.nominal, 0);
+
     const saldo = totalPemasukan - totalPengeluaran;
 
-    const today = new Date(); today.setHours(0, 0, 0, 0);
-    const keluarHariIni = transaksi.filter(t => t.jenis === 'pengeluaran' && new Date(t.tanggal) >= today).reduce((s, t) => s + t.nominal, 0);
-    const week = new Date(); week.setDate(week.getDate() - 7);
-    const keluar7Hari = transaksi.filter(t => t.jenis === 'pengeluaran' && new Date(t.tanggal) >= week).reduce((s, t) => s + t.nominal, 0);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
 
-    res.json({ success: true, data: { saldo, totalPemasukan, totalPengeluaran, keluarHariIni, keluar7Hari } });
+    const keluarHariIni = transaksi
+      .filter(t => t.jenis === 'pengeluaran' && new Date(t.tanggal) >= today)
+      .reduce((s, t) => s + t.nominal, 0);
+
+    const week = new Date();
+    week.setDate(week.getDate() - 7);
+
+    const keluar7Hari = transaksi
+      .filter(t => t.jenis === 'pengeluaran' && new Date(t.tanggal) >= week)
+      .reduce((s, t) => s + t.nominal, 0);
+
+    // TAMBAHAN: pemasukan 7 hari terakhir
+    const masuk7Hari = transaksi
+      .filter(t => t.jenis === 'pemasukan' && new Date(t.tanggal) >= week)
+      .reduce((s, t) => s + t.nominal, 0);
+
+    res.json({
+      success: true,
+      data: {
+        saldo,
+        totalPemasukan,
+        totalPengeluaran,
+        keluarHariIni,
+        keluar7Hari,
+        masuk7Hari  // ← ini yang ditambahkan ke response
+      }
+    });
+
   } catch (e) {
     res.status(500).json({ success: false, message: e.message });
   }
